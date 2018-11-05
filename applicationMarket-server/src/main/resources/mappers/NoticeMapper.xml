@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.NoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.Notice" >
+    <id column="notice_id" property="noticeId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="html_content" property="htmlContent" jdbcType="VARCHAR" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="top_time" property="topTime" jdbcType="TIMESTAMP" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="publish_id" property="publishId" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.techwells.applicationMarket.domain.Notice" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    notice_id, title, html_content, top, top_time, deleted, activated, publish_id, create_date, 
+    update_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_notice
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_notice
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.Notice" >
+    <selectKey resultType="java.lang.Integer" keyProperty="noticeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_notice (title, html_content, top, 
+      top_time, deleted, activated, 
+      publish_id, create_date, update_date, 
+      content)
+    values (#{title,jdbcType=VARCHAR}, #{htmlContent,jdbcType=VARCHAR}, #{top,jdbcType=INTEGER}, 
+      #{topTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, 
+      #{publishId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.Notice" >
+    <selectKey resultType="java.lang.Integer" keyProperty="noticeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="htmlContent != null" >
+        html_content,
+      </if>
+      <if test="top != null" >
+        top,
+      </if>
+      <if test="topTime != null" >
+        top_time,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="publishId != null" >
+        publish_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        #{htmlContent,jdbcType=VARCHAR},
+      </if>
+      <if test="top != null" >
+        #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.Notice" >
+    update t_notice
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        html_content = #{htmlContent,jdbcType=VARCHAR},
+      </if>
+      <if test="top != null" >
+        top = #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        top_time = #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="publishId != null" >
+        publish_id = #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.techwells.applicationMarket.domain.Notice" >
+    update t_notice
+    set title = #{title,jdbcType=VARCHAR},
+      html_content = #{htmlContent,jdbcType=VARCHAR},
+      top = #{top,jdbcType=INTEGER},
+      top_time = #{topTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      publish_id = #{publishId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.Notice" >
+    update t_notice
+    set title = #{title,jdbcType=VARCHAR},
+      html_content = #{htmlContent,jdbcType=VARCHAR},
+      top = #{top,jdbcType=INTEGER},
+      top_time = #{topTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      publish_id = #{publishId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </update>
+  
+ <!-- 
+ 	 List<NoticeAdmin> selectNoticeAdmins(PagingTool pagingTool);
+  -->
+ <select id="selectNoticeAdmins" resultType="com.techwells.applicationMarket.domain.rs.NoticeAdmin" parameterType="com.techwells.applicationMarket.util.PagingTool">
+ 	SELECT
+	title,
+	notice_id AS noticeId,
+	create_date AS createDate,
+	account
+FROM
+	t_view_notice_admin
+ORDER BY
+	top DESC,
+	top_time DESC,
+	notice_id DESC
+limit #{startNum},#{pageSize}
+ </select>
+ 
+ <!-- 
+ 	  int countTotal(PagingTool pagingTool);
+  -->
+  
+  <select id="countTotal" resultType="java.lang.Integer" parameterType="com.techwells.applicationMarket.util.PagingTool">
+  	SELECT
+	count(*)
+FROM
+	t_view_notice_admin
+ORDER BY
+	top DESC,
+	top_time DESC,
+	notice_id DESC
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.WalletDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.WalletDetail" >
+    <id column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="hash" property="hash" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="wallet_id" property="walletId" jdbcType="INTEGER" />
+    <result column="from_address" property="fromAddress" jdbcType="VARCHAR" />
+    <result column="to_address" property="toAddress" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="VARCHAR" />
+    <result column="fee" property="fee" jdbcType="DOUBLE" />
+    <result column="block" property="block" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="transaction_date" property="transactionDate" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    detail_id, hash, number, wallet_id, from_address, to_address, money, fee, block, 
+    remark, url, transaction_date, create_date, deleted, activated, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_wallt_detail
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_wallt_detail
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.WalletDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="detailId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_wallt_detail (hash, number, wallet_id, 
+      from_address, to_address, money, 
+      fee, block, remark, 
+      url, transaction_date, create_date, 
+      deleted, activated, update_date
+      )
+    values (#{hash,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{walletId,jdbcType=INTEGER}, 
+      #{fromAddress,jdbcType=VARCHAR}, #{toAddress,jdbcType=VARCHAR}, #{money,jdbcType=VARCHAR}, 
+      #{fee,jdbcType=DOUBLE}, #{block,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{transactionDate,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.WalletDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="detailId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_wallt_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hash != null" >
+        hash,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="walletId != null" >
+        wallet_id,
+      </if>
+      <if test="fromAddress != null" >
+        from_address,
+      </if>
+      <if test="toAddress != null" >
+        to_address,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="fee != null" >
+        fee,
+      </if>
+      <if test="block != null" >
+        block,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="transactionDate != null" >
+        transaction_date,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hash != null" >
+        #{hash,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="walletId != null" >
+        #{walletId,jdbcType=INTEGER},
+      </if>
+      <if test="fromAddress != null" >
+        #{fromAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="toAddress != null" >
+        #{toAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="block != null" >
+        #{block,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionDate != null" >
+        #{transactionDate,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.WalletDetail" >
+    update t_wallt_detail
+    <set >
+      <if test="hash != null" >
+        hash = #{hash,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="walletId != null" >
+        wallet_id = #{walletId,jdbcType=INTEGER},
+      </if>
+      <if test="fromAddress != null" >
+        from_address = #{fromAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="toAddress != null" >
+        to_address = #{toAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="block != null" >
+        block = #{block,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionDate != null" >
+        transaction_date = #{transactionDate,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.WalletDetail" >
+    update t_wallt_detail
+    set hash = #{hash,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      wallet_id = #{walletId,jdbcType=INTEGER},
+      from_address = #{fromAddress,jdbcType=VARCHAR},
+      to_address = #{toAddress,jdbcType=VARCHAR},
+      money = #{money,jdbcType=VARCHAR},
+      fee = #{fee,jdbcType=DOUBLE},
+      block = #{block,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      transaction_date = #{transactionDate,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </update>
+  
+ <!-- 
+ 	List<WalletDetail> selectListByBlock();
+  -->
+ <select id="selectListByBlock" resultMap="BaseResultMap">
+ 	select * from t_wallt_detail where block=""
+ </select>
+ 
+ 
+<!-- 
+	List<WalletDetail> selectListLimit(@Param("walletId")Integer walletId,@Param("limit")Integer limit);
+ -->
+<select id="selectListLimit" resultMap="BaseResultMap">
+	SELECT
+	*
+FROM
+	t_wallt_detail
+WHERE
+	wallet_id = #{walletId}
+ORDER BY
+	create_date DESC
+LIMIT #{limit}
+</select>
+
+
+<!-- 
+	List<WalletDetail> selectWalletDetails(PagingTool pagingTool);
+ -->
+<select id="selectWalletDetails" parameterType="com.techwells.applicationMarket.util.PagingTool" resultMap="BaseResultMap">
+	SELECT
+	*
+FROM
+	t_wallt_detail wd
+WHERE
+	wallet_id = #{params.walletId}
+order by create_date desc
+limit #{startNum},#{pageSize}
+</select>
+
+<!-- 
+	int countTotalWalletDetail(PagingTool pagingTool);
+ -->
+<select id="countTotalWalletDetail" parameterType="com.techwells.applicationMarket.util.PagingTool" resultType="java.lang.Integer">
+	SELECT
+	count(*)
+FROM
+	t_wallt_detail wd
+WHERE
+	wallet_id = #{params.walletId}
+</select>
+
+
+<!-- 
+	 List<WalletDetailVos> selectDetailVosList(PagingTool pagingTool);
+ -->
+<select id="selectDetailVosList" resultType="com.techwells.applicationMarket.domain.rs.WalletDetailVos" parameterType="com.techwells.applicationMarket.util.PagingTool">
+	SELECT DISTINCT
+	(LEFT(wd.create_date, 7)) AS yearMonth
+FROM
+	(
+		SELECT
+			*
+		FROM
+			t_wallt_detail
+		WHERE
+			wallet_id = #{params.walletId}
+		ORDER BY
+			create_date DESC
+		LIMIT #{startNum},
+		#{pageSize}
+	) wd
+
+</select>
+
+
+<!-- 
+	 WalletDetail selectWalletDetail(@Param("yearMonth")String yearMonth,@Param("limit")Integer limit);
+ -->
+<select id="selectWalletDetail" resultMap="BaseResultMap">
+	SELECT
+	*
+FROM
+	t_wallt_detail
+WHERE
+	LEFT (create_date, 7) = #{yearMonth}
+ORDER BY
+	create_date DESC
+LIMIT #{limit}
+</select>
+
+<!-- 
+	 List<WalletDetail> selectWalletDetailsBack(PagingTool pagingTool);
+ -->
+<select id="selectWalletDetailsBack" parameterType="com.techwells.applicationMarket.util.PagingTool" resultMap="BaseResultMap" >
+	SELECT
+	wd.*
+FROM
+	t_user u
+INNER JOIN t_wallet w ON u.user_id = w.user_id
+AND u.user_id = #{params.userId} and u.deleted=1
+INNER JOIN t_wallt_detail wd 
+on wd.wallet_id=w.wallet_id
+<where>
+	<if test="params.walletType!=null">
+		and w.type=#{params.walletType}
+	</if>
+</where>
+ORDER BY wd.create_date DESC
+limit #{startNum},#{pageSize}
+</select>
+
+<!-- 
+	 int countTotalWalletDetailsBack(PagingTool pagingTool);
+ -->
+<select id="countTotalWalletDetailsBack" parameterType="com.techwells.applicationMarket.util.PagingTool" resultType="java.lang.Integer">
+	SELECT
+	count(*)
+FROM
+	t_user u
+INNER JOIN t_wallet w ON u.user_id = w.user_id
+AND u.user_id = #{params.userId} and u.deleted=1
+INNER JOIN t_wallt_detail wd 
+on wd.wallet_id=w.wallet_id
+<where>
+	<if test="params.walletType!=null">
+		and w.type=#{params.walletType}
+	</if>
+</where>
+</select>
+
+</mapper>

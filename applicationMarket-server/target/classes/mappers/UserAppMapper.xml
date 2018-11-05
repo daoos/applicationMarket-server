@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.UserAppMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.UserApp" >
+    <id column="app_id" property="appId" jdbcType="INTEGER" />
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="version_id" property="versionId" jdbcType="INTEGER" />
+    <result column="is_uninstall" property="isUninstall" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    app_id, user_id, version_id, is_uninstall, deleted, activated, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.techwells.applicationMarket.domain.UserAppKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_app
+    where app_id = #{appId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.UserAppKey" >
+    delete from t_user_app
+    where app_id = #{appId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.UserApp" >
+    insert into t_user_app (app_id, user_id, version_id, 
+      is_uninstall, deleted, activated, 
+      create_date, update_date)
+    values (#{appId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{versionId,jdbcType=INTEGER}, 
+      #{isUninstall,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.UserApp" >
+    insert into t_user_app
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="versionId != null" >
+        version_id,
+      </if>
+      <if test="isUninstall != null" >
+        is_uninstall,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="versionId != null" >
+        #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="isUninstall != null" >
+        #{isUninstall,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.UserApp" >
+    update t_user_app
+    <set >
+      <if test="versionId != null" >
+        version_id = #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="isUninstall != null" >
+        is_uninstall = #{isUninstall,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where app_id = #{appId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.UserApp" >
+    update t_user_app
+    set version_id = #{versionId,jdbcType=INTEGER},
+      is_uninstall = #{isUninstall,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where app_id = #{appId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.FeedBackMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.FeedBack" >
+    <id column="feedback_id" property="feedbackId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="reply_content" property="replyContent" jdbcType="VARCHAR" />
+    <result column="admin_id" property="adminId" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap type="com.techwells.applicationMarket.domain.rs.FeedBackImageUserProvinceVos" id="VosResultMap">
+  	<result property="account" column="user_name"/>
+  	<result property="realName" column="real_name"/>
+  	<result property="mobile" column="mobile"/>
+  	<result property="feedBackDate" column="create_date"/>
+  	<result property="content" column="content"/>
+  	<result property="feedBackId" column="feedback_id"/>
+  	<result property="address" column="address"/>
+	<collection property="images" ofType="com.techwells.applicationMarket.domain.FeedBackImage">
+		<result property="imageUrl" column="image_url"/>
+	</collection> 
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    feedback_id, content, user_id, reply_content, admin_id, deleted, activated, create_date, 
+    update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_feedback
+    where feedback_id = #{feedbackId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_feedback
+    where feedback_id = #{feedbackId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.FeedBack" >
+    <selectKey resultType="java.lang.Integer" keyProperty="feedbackId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_feedback (content, user_id, reply_content, 
+      admin_id, deleted, activated, 
+      create_date, update_date)
+    values (#{content,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{replyContent,jdbcType=VARCHAR}, 
+      #{adminId,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.FeedBack" >
+    <selectKey resultType="java.lang.Integer" keyProperty="feedbackId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="replyContent != null" >
+        reply_content,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="replyContent != null" >
+        #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.FeedBack" >
+    update t_feedback
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="replyContent != null" >
+        reply_content = #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where feedback_id = #{feedbackId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.FeedBack" >
+    update t_feedback
+    set content = #{content,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      reply_content = #{replyContent,jdbcType=VARCHAR},
+      admin_id = #{adminId,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where feedback_id = #{feedbackId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- 
+  	List<FeedBackImageUserProvinceVos> selectFeedBackImageUserProvinceVos(PagingTool pagingTool);
+   -->
+   
+   <select id="selectFeedBackImageUserProvinceVos" resultMap="VosResultMap" parameterType="com.techwells.applicationMarket.util.PagingTool">
+   		SELECT
+	u.user_name,
+	u.address,
+	u.real_name,
+	u.mobile,
+	fb.create_date,
+	fb.content,
+	fb.feedback_id,
+	fi.image_url
+FROM
+	(
+		SELECT
+			*
+		FROM
+			t_feedback fe
+			<where>
+				<if test="params.feedBackDate!=null">
+					and fe.create_date between #{params.feedBackDate} and date_sub(#{params.feedBackDate},interval -1 day)
+				</if>
+			</where>
+		limit #{startNum},#{pageSize}
+	) fb
+LEFT JOIN t_feedback_image fi ON fb.feedback_id = fi.feedback_id
+INNER JOIN t_user u ON u.user_id = fb.user_id and u.deleted=1
+INNER JOIN t_dict_provinces p ON u.province_code = p.province_code
+	<where>
+		<if test="params.account!=null">
+			and u.user_name=#{params.account}
+		</if>
+		
+		<if test="params.realName!=null">
+			and u.real_name=#{params.realName}
+		</if>
+		
+		<if test="params.mobile!=null">
+			and u.mobile=#{params.mobile}
+		</if>
+		
+		<if test="params.provinceCode!=null">
+			and u.province_code=#{params.provinceCode}
+		</if>
+	</where>
+  </select>
+   
+   
+ <!-- 
+ 	int countTotal(PagingTool pagingTool);
+  -->
+ <select id="countTotal" parameterType="com.techwells.applicationMarket.util.PagingTool" resultType="java.lang.Integer">
+ 		SELECT
+	count(*)
+FROM
+	t_feedback fb
+INNER JOIN t_user u ON u.user_id = fb.user_id and u.deleted=1
+INNER JOIN t_dict_provinces p ON u.province_code = p.province_code
+ 		
+ 		<where>
+		<if test="params.account!=null">
+			and u.user_name=#{params.account}
+		</if>
+		
+		<if test="params.realName!=null">
+			and u.real_name=#{params.realName}
+		</if>
+		
+		<if test="params.mobile!=null">
+			and u.mobile=#{params.mobile}
+		</if>
+		
+		<if test="params.provinceCode!=null">
+			and u.province_code=#{params.provinceCode}
+		</if>
+		
+		<if test="params.feedBackDate!=null">
+		<!-- and fb.create_date=#{params.feedBackDate} -->
+			and fb.create_date between #{params.feedBackDate} and date_sub(#{params.feedBackDate},interval -1 day)
+		</if>
+	</where>
+ </select>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+</mapper>

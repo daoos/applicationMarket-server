@@ -1,0 +1,10 @@
+targetProject=src/test/java
+model.package=com.techwells.applicationMarket.domain
+sqlMap.package=com.techwells.applicationMarket.mapping
+dao.package=com.techwells.applicationMarket.dao
+jdbc.driver.class=com.mysql.jdbc.Driver
+#jdbc.url=jdbc:mysql://www.emoonbow.com:3306/applicationMarket?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+jdbc.url=jdbc:mysql://www.emoonbow.com:3306/applicationMarket?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+jdbc.user=root
+jdbc.password=Taiwen2017
+#jdbc.password=root

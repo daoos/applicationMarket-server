@@ -1,0 +1,96 @@
+package com.techwells.applicationMarket.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.ibatis.javassist.expr.NewArray;
+import org.springframework.stereotype.Service;
+
+import com.techwells.applicationMarket.dao.MessageMapper;
+import com.techwells.applicationMarket.domain.Message;
+import com.techwells.applicationMarket.service.MessageService;
+import com.techwells.applicationMarket.util.PagingTool;
+import com.techwells.applicationMarket.util.ResultInfo;
+
+@Service
+public class MessageServiceImpl implements MessageService{
+
+	@Resource
+	private MessageMapper messageMapper;
+	
+	@Override
+	public Object addMessage(Message message)
+			throws Exception {
+		ResultInfo resultInfo=new ResultInfo();
+		int count=messageMapper.insertSelective(message);
+		
+		if (count==0) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("添加失败");
+			return resultInfo;
+		}
+		
+		resultInfo.setMessage("添加成功");
+		return resultInfo;
+	}
+
+	
+	@Override
+	public Object getMessage(Integer messageId) throws Exception {
+		ResultInfo resultInfo=new ResultInfo();
+		Message message=messageMapper.selectByPrimaryKey(messageId);
+		
+		if (message==null) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("该消息不存在");
+			return resultInfo;
+		}
+		resultInfo.setMessage("获取成功");
+		resultInfo.setResult(message);
+		return resultInfo;
+	}
+
+
+	@Override
+	public Object getMessageList(PagingTool pagingTool) throws Exception {
+		ResultInfo resultInfo=new ResultInfo();
+		int total=messageMapper.countTotal(pagingTool);  //总数量
+		
+		//如果总数为0，那么不需要再查询数据库了，直接返回即可
+		if (total==0) {
+			resultInfo.setMessage("获取成功");
+			resultInfo.setTotal(total);
+			resultInfo.setResult(new ArrayList<Message>());
+			return resultInfo;
+		}
+		
+		List<Message> messages=messageMapper.selectMessageList(pagingTool);   //获取列表
+		resultInfo.setMessage("获取成功");
+		resultInfo.setResult(messages);
+		resultInfo.setTotal(total);
+		return resultInfo;
+	}
+
+
+	@Override
+	public Object delete(Integer messageId) throws Exception {
+		ResultInfo resultInfo=new ResultInfo();
+		int count=messageMapper.deleteByPrimaryKey(messageId);
+		if (count==0) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("应用Id");
+			return resultInfo;
+		}
+		
+		resultInfo.setMessage("删除成功");
+		return resultInfo;
+	}
+	
+	
+	
+	
+	
+	
+}

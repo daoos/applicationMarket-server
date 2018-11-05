@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/techwells/applicationMarket/controller/BannerController.java=UTF-8
+encoding//src/main/java/com/techwells/applicationMarket/service/impl/BannerServiceImpl.java=UTF-8
+encoding//src/main/java/com/techwells/applicationMarket/util/Base64Util.java=UTF-8
+encoding//src/main/java/com/techwells/applicationMarket/util/ConstantWeChat.java=UTF-8
+encoding//src/main/java/com/techwells/applicationMarket/util/HttpUtils.java=UTF-8
+encoding//src/main/java/com/techwells/applicationMarket/util/RandomCodeUtils.java=UTF-8
+encoding//src/main/resources/job.properties=UTF-8
+encoding/<project>=UTF-8

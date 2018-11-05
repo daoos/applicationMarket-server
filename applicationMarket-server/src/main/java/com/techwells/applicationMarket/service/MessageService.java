@@ -1,0 +1,26 @@
+package com.techwells.applicationMarket.service;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.techwells.applicationMarket.domain.Message;
+import com.techwells.applicationMarket.util.PagingTool;
+
+@Transactional
+public interface MessageService {
+	
+	Object addMessage(Message message)throws Exception;
+	
+	
+	Object getMessage(Integer messageId)throws Exception;
+
+
+	Object getMessageList(PagingTool pagingTool)throws Exception;
+
+
+	/**
+	 * 删除消息
+	 * @param messageId
+	 * @return
+	 */
+	Object delete(Integer messageId)throws Exception;
+}

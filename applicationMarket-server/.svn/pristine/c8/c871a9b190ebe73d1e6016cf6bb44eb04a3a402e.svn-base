@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.RecommendTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.RecommendType" >
+    <id column="recommend_type_id" property="recommendTypeId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="top_time" property="topTime" jdbcType="TIMESTAMP" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+
+  <sql id="Base_Column_List" >
+    recommend_type_id, title, count, sort, top, top_time, deleted, activated, create_date, 
+    update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_recommend_type
+    where recommend_type_id = #{recommendTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_app_recommend_type
+    where recommend_type_id = #{recommendTypeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.RecommendType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="recommendTypeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_recommend_type (title, count, sort, 
+      top, top_time, deleted, 
+      activated, create_date, update_date
+      )
+    values (#{title,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{top,jdbcType=INTEGER}, #{topTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=INTEGER}, 
+      #{activated,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.RecommendType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="recommendTypeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_recommend_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="top != null" >
+        top,
+      </if>
+      <if test="topTime != null" >
+        top_time,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="top != null" >
+        #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.RecommendType" >
+    update t_app_recommend_type
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="top != null" >
+        top = #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        top_time = #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where recommend_type_id = #{recommendTypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.RecommendType" >
+    update t_app_recommend_type
+    set title = #{title,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      top = #{top,jdbcType=INTEGER},
+      top_time = #{topTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where recommend_type_id = #{recommendTypeId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  
+  <!-- 
+  	List<AppAndVersionVos> selectAppList(PagingTool pagingTool);
+   -->
+  <select id="selectAppList"  resultType="com.techwells.applicationMarket.domain.rs.AppAndVersionVos" parameterType="com.techwells.applicationMarket.util.PagingTool">
+  		SELECT
+	a. NAME AS appName,
+	av.version_number AS versionNum,
+	a.app_id AS appId,
+	av.app_version_id AS versionId,
+	av.size AS size,
+	av.download_url AS downloadUrl,
+	a.introduction AS introduction,
+	a.logo AS logo,a.download_money as downloadMoney
+FROM
+	t_app a,
+	t_app_version av,
+	t_app_recommend_type art
+
+<where>
+	a.app_id = av.app_id
+	AND av.is_history_version = 0 and av.activated=3
+	AND a.ground_status = 1
+	AND art.recommend_type_id = a.recommend_type_id
+	AND a.plateform=#{params.platform}
+	<if test="params.typeId!=null">
+		AND art.recommend_type_id=#{params.typeId}
+	</if>
+	
+	<if test="params.sort!=null">
+		and art.sort=#{params.sort}
+	</if>
+	and NOW()>=a.publish_date
+</where>
+ORDER BY
+	a.top DESC,
+	a.top_time DESC
+limit #{startNum},#{pageSize}
+  </select>
+  
+
+<!-- 
+	int countTotal(PagingTool pagingTool);
+ -->
+ 
+ <select id="countTotal" resultType="java.lang.Integer" parameterType="com.techwells.applicationMarket.util.PagingTool">
+ 	SELECT
+	count(*)
+FROM
+	t_app a,
+	t_app_version av,
+	t_app_recommend_type art
+WHERE
+	a.app_id = av.app_id
+AND av.is_history_version = 0
+AND a.ground_status = 1
+AND art.recommend_type_id = a.recommend_type_id
+AND art.recommend_type_id=#{params.typeId}
+AND a.plateform=#{params.platform}
+</select>
+
+
+
+<!-- 
+	List<RecommendType> selectRecommendTypes(PagingTool pagingTool);
+ -->
+<select id="selectRecommendTypes" parameterType="com.techwells.applicationMarket.util.PagingTool" resultMap="BaseResultMap">
+	SELECT
+	recommend_type_id,
+	title,
+	count,
+	sort
+FROM
+	t_app_recommend_type
+
+<where>
+	<if test="params.title!=null">
+		and title=#{params.title}
+	</if>
+</where>
+limit #{startNum},#{pageSize}
+</select>
+
+<!-- 
+	int countTotalRecommendType(PagingTool pagingTool);
+ -->
+<select id="countTotalRecommendType" resultType="java.lang.Integer" parameterType="com.techwells.applicationMarket.util.PagingTool">
+	SELECT
+	count(*)
+FROM
+	t_app_recommend_type
+
+<where>
+	<if test="params.title!=null">
+		and title=#{params.title}
+	</if>
+</where>
+</select>
+
+
+<!-- 
+	RecommendType selectRecommendTypeBySort(Integer sort);
+ -->
+<select id="selectRecommendTypeBySort" resultMap="BaseResultMap">
+	select 
+    <include refid="Base_Column_List" />
+    from t_app_recommend_type
+    where sort=#{sort}
+</select>
+ 
+
+
+<!-- 
+	List<AppAndVersionVos> selectAppAndVersionVos(Integer typeId);
+ -->
+<select id="selectAppAndVersionVos" resultType="com.techwells.applicationMarket.domain.rs.AppAndVersionVos">
+	SELECT
+	a.app_id as appId,
+	a.name as appName,
+	av.size as size,
+	a.logo as logo,
+	ar.recommend_type_id as recommendTypeId
+FROM
+	t_app_recommend_type ar
+INNER JOIN t_app a ON ar.recommend_type_id = a.recommend_type_id and ar.recommend_type_id=#{typeId}
+AND a.ground_status = 1
+AND now() >= a.publish_date
+INNER JOIN t_app_version av ON av.app_id = a.app_id
+AND av.is_history_version = 0
+</select>
+
+<!-- 
+	List<AppAndVersionVos> selectAppVersionVoList(@Param("typeId")Integer typeId,@Param("platform")Integer platform,@Param("limit")Integer limit);
+ -->
+<select id="selectAppVersionVoList" resultType="com.techwells.applicationMarket.domain.rs.AppAndVersionVos">
+	SELECT
+	a.app_id as appId,
+	a.name as appName,
+	av.size as size,
+	a.logo as logo,
+	ar.recommend_type_id as recommendTypeId,
+	av.download_url as downloadUrl
+FROM
+	t_app_recommend_type ar
+INNER JOIN t_app a ON ar.recommend_type_id = a.recommend_type_id and ar.recommend_type_id=#{typeId}
+AND a.ground_status = 1
+AND now() >= a.publish_date
+INNER JOIN t_app_version av ON av.app_id = a.app_id
+AND av.is_history_version = 0
+and a.plateform=#{platform}
+limit #{limit}
+</select>
+
+
+
+</mapper>

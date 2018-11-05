@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.BannerMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.Banner" >
+    <id column="banner_id" property="bannerId" jdbcType="INTEGER" />
+    <result column="banner_type" property="bannerType" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="INTEGER" />
+    <result column="banner_name" property="bannerName" jdbcType="VARCHAR" />
+    <result column="banner_page_location" property="bannerPageLocation" jdbcType="INTEGER" />
+    <result column="banner_location" property="bannerLocation" jdbcType="INTEGER" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="sort_index" property="sortIndex" jdbcType="INTEGER" />
+    <result column="video_url" property="videoUrl" jdbcType="VARCHAR" />
+    <result column="click_count" property="clickCount" jdbcType="INTEGER" />
+    <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="top_time" property="topTime" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    banner_id, banner_type, app_id, banner_name, banner_page_location, banner_location, 
+    image_url, start_date, end_date, sort_index, video_url, click_count, link_url, top, 
+    top_time, description, activated, deleted, created_date, updated_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_banner
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_banner
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.Banner" >
+    <selectKey resultType="java.lang.Integer" keyProperty="bannerId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_banner (banner_type, app_id, banner_name, 
+      banner_page_location, banner_location, image_url, 
+      start_date, end_date, sort_index, 
+      video_url, click_count, link_url, 
+      top, top_time, description, 
+      activated, deleted, created_date, 
+      updated_date)
+    values (#{bannerType,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{bannerName,jdbcType=VARCHAR}, 
+      #{bannerPageLocation,jdbcType=INTEGER}, #{bannerLocation,jdbcType=INTEGER}, #{imageUrl,jdbcType=VARCHAR}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{sortIndex,jdbcType=INTEGER}, 
+      #{videoUrl,jdbcType=VARCHAR}, #{clickCount,jdbcType=INTEGER}, #{linkUrl,jdbcType=VARCHAR}, 
+      #{top,jdbcType=INTEGER}, #{topTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, 
+      #{activated,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{updatedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.Banner" >
+    <selectKey resultType="java.lang.Integer" keyProperty="bannerId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_banner
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bannerType != null" >
+        banner_type,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="bannerName != null" >
+        banner_name,
+      </if>
+      <if test="bannerPageLocation != null" >
+        banner_page_location,
+      </if>
+      <if test="bannerLocation != null" >
+        banner_location,
+      </if>
+      <if test="imageUrl != null" >
+        image_url,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="sortIndex != null" >
+        sort_index,
+      </if>
+      <if test="videoUrl != null" >
+        video_url,
+      </if>
+      <if test="clickCount != null" >
+        click_count,
+      </if>
+      <if test="linkUrl != null" >
+        link_url,
+      </if>
+      <if test="top != null" >
+        top,
+      </if>
+      <if test="topTime != null" >
+        top_time,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="updatedDate != null" >
+        updated_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bannerType != null" >
+        #{bannerType,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="bannerName != null" >
+        #{bannerName,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerPageLocation != null" >
+        #{bannerPageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="bannerLocation != null" >
+        #{bannerLocation,jdbcType=INTEGER},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sortIndex != null" >
+        #{sortIndex,jdbcType=INTEGER},
+      </if>
+      <if test="videoUrl != null" >
+        #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="clickCount != null" >
+        #{clickCount,jdbcType=INTEGER},
+      </if>
+      <if test="linkUrl != null" >
+        #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="top != null" >
+        #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedDate != null" >
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.Banner" >
+    update t_banner
+    <set >
+      <if test="bannerType != null" >
+        banner_type = #{bannerType,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="bannerName != null" >
+        banner_name = #{bannerName,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerPageLocation != null" >
+        banner_page_location = #{bannerPageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="bannerLocation != null" >
+        banner_location = #{bannerLocation,jdbcType=INTEGER},
+      </if>
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sortIndex != null" >
+        sort_index = #{sortIndex,jdbcType=INTEGER},
+      </if>
+      <if test="videoUrl != null" >
+        video_url = #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="clickCount != null" >
+        click_count = #{clickCount,jdbcType=INTEGER},
+      </if>
+      <if test="linkUrl != null" >
+        link_url = #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="top != null" >
+        top = #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        top_time = #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedDate != null" >
+        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.Banner" >
+    update t_banner
+    set banner_type = #{bannerType,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=INTEGER},
+      banner_name = #{bannerName,jdbcType=VARCHAR},
+      banner_page_location = #{bannerPageLocation,jdbcType=INTEGER},
+      banner_location = #{bannerLocation,jdbcType=INTEGER},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      sort_index = #{sortIndex,jdbcType=INTEGER},
+      video_url = #{videoUrl,jdbcType=VARCHAR},
+      click_count = #{clickCount,jdbcType=INTEGER},
+      link_url = #{linkUrl,jdbcType=VARCHAR},
+      top = #{top,jdbcType=INTEGER},
+      top_time = #{topTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      activated = #{activated,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- 
+  	Banner countBannerByPageAndLocation(@Param("location")Integer location,@Param("activated")Integer activated,@Param("platform")Integer platform);
+   -->
+   <select id="countBannerByPageAndLocation" resultMap="BaseResultMap">
+   		select b.* from t_banner b,t_app a
+   		<where>
+   		<if test="location!=null">
+   			and b.banner_location=#{location}
+   		</if>
+   		
+   		<if test="activated!=null">
+   			and b.activated=#{activated}
+   		</if>
+   		
+   		<if test="platform!=null">
+   			and a.plateform=#{platform}
+   		</if>
+   		and b.app_id=a.app_id
+   		</where>
+   </select>
+   
+  
+  <!-- 
+  	 int countTotal(PagingTool pagingTool);
+    
+    List<Banner> selectBannerList(PagingTool pagingTool);
+   -->
+   
+   <select id="countTotal" resultType="java.lang.Integer" parameterType="com.techwells.applicationMarket.util.PagingTool">
+   		select count(*) from t_banner;
+   </select>
+   
+   <select id="selectBannerList" parameterType="com.techwells.applicationMarket.util.PagingTool" resultMap="BaseResultMap">
+		   		SELECT
+			b.banner_id,
+			b.banner_page_location,
+			b.banner_location,
+			b.image_url,
+			b.activated,
+			b.created_date
+		FROM
+			t_banner b,
+			t_app a
+		<where>
+			<if test="params.platform!=null">
+				AND a.plateform = #{params.platform}
+			</if>
+			and a.app_id = b.app_id
+		</where>
+		limit #{startNum},#{pageSize}
+	</select>
+   
+   
+   
+   <!-- 
+   	List<Banner> selectBanners(Integer platform);  
+    -->
+   <select id="selectBanners" resultMap="BaseResultMap">
+   		SELECT
+			*
+		FROM
+			t_banner b,
+			t_app a
+		<where>
+			<if test="platform!=null">
+				AND a.plateform = #{platform}
+			</if>
+			and a.app_id = b.app_id
+		</where>
+   </select>
+   	
+   
+   
+  
+  
+  
+  
+</mapper>

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.TaskMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.Task" >
+    <id column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="task_name" property="taskName" jdbcType="VARCHAR" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="task_type_id" property="taskTypeId" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="INTEGER" />
+    <result column="publish_id" property="publishId" jdbcType="INTEGER" />
+    <result column="link" property="link" jdbcType="VARCHAR" />
+    <result column="reward_money" property="rewardMoney" jdbcType="DOUBLE" />
+    <result column="allow_number" property="allowNumber" jdbcType="INTEGER" />
+    <result column="poup_leve" property="poupLeve" jdbcType="INTEGER" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    task_id, task_name, introduction, task_type_id, app_id, publish_id, link, reward_money, 
+    allow_number, poup_leve, start_date, end_date, status, deleted, activated, create_date, 
+    update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.Task" >
+    <selectKey resultType="java.lang.Integer" keyProperty="taskId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_task (task_name, introduction, task_type_id, 
+      app_id, publish_id, link, 
+      reward_money, allow_number, poup_leve, 
+      start_date, end_date, status, 
+      deleted, activated, create_date, 
+      update_date)
+    values (#{taskName,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{taskTypeId,jdbcType=INTEGER}, 
+      #{appId,jdbcType=INTEGER}, #{publishId,jdbcType=INTEGER}, #{link,jdbcType=VARCHAR}, 
+      #{rewardMoney,jdbcType=DOUBLE}, #{allowNumber,jdbcType=INTEGER}, #{poupLeve,jdbcType=INTEGER}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.Task" >
+    <selectKey resultType="java.lang.Integer" keyProperty="taskId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskName != null" >
+        task_name,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="taskTypeId != null" >
+        task_type_id,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="publishId != null" >
+        publish_id,
+      </if>
+      <if test="link != null" >
+        link,
+      </if>
+      <if test="rewardMoney != null" >
+        reward_money,
+      </if>
+      <if test="allowNumber != null" >
+        allow_number,
+      </if>
+      <if test="poupLeve != null" >
+        poup_leve,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskName != null" >
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTypeId != null" >
+        #{taskTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="publishId != null" >
+        #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="link != null" >
+        #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardMoney != null" >
+        #{rewardMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="allowNumber != null" >
+        #{allowNumber,jdbcType=INTEGER},
+      </if>
+      <if test="poupLeve != null" >
+        #{poupLeve,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.Task" >
+    update t_task
+    <set >
+      <if test="taskName != null" >
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTypeId != null" >
+        task_type_id = #{taskTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="publishId != null" >
+        publish_id = #{publishId,jdbcType=INTEGER},
+      </if>
+      <if test="link != null" >
+        link = #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardMoney != null" >
+        reward_money = #{rewardMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="allowNumber != null" >
+        allow_number = #{allowNumber,jdbcType=INTEGER},
+      </if>
+      <if test="poupLeve != null" >
+        poup_leve = #{poupLeve,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.Task" >
+    update t_task
+    set task_name = #{taskName,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      task_type_id = #{taskTypeId,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=INTEGER},
+      publish_id = #{publishId,jdbcType=INTEGER},
+      link = #{link,jdbcType=VARCHAR},
+      reward_money = #{rewardMoney,jdbcType=DOUBLE},
+      allow_number = #{allowNumber,jdbcType=INTEGER},
+      poup_leve = #{poupLeve,jdbcType=INTEGER},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  
+<!-- 
+	List<TaskAdminVos> selectTaskList(PagingTool pagingTool);
+ -->
+<select id="selectTaskList" resultType="com.techwells.applicationMarket.domain.rs.TaskAdminVos" parameterType="com.techwells.applicationMarket.util.PagingTool">
+	SELECT
+	tt.task_id AS taskId,
+	tt.task_name AS taskName,
+	tt.task_type_id AS typeId,
+	ttt.type_name AS typeName,
+	tt.create_date AS publishDate,
+	a.account AS publishAccount,
+	tt.poup_leve AS poupLeve,
+	tt. STATUS AS STATUS
+FROM
+	t_task tt
+LEFT JOIN t_admin a ON tt.publish_id = a.admin_id
+INNER JOIN t_task_type ttt ON tt.task_type_id = ttt.task_type_id
+
+<where>
+	<if test="params.taskId!=null">
+		and tt.task_id=#{params.taskId}
+	</if>
+	
+	<if test="params.taskName!=null">
+		and tt.task_name=#{params.taskName}
+	</if>
+	
+	<if test="params.taskTypeId!=null">
+		and tt.task_type_id=#{params.taskTypeId}
+	</if>
+	
+	<if test="params.poupLeve!=null">
+		and tt.poup_leve=#{params.poupLeve}
+	</if>
+	
+	<if test="params.status!=null">
+		and tt.status=#{params.status}
+	</if>
+	
+</where>
+
+ORDER BY tt.task_id desc
+limit #{startNum},#{pageSize}
+</select>
+
+
+<!-- 
+	int countTotal(PagingTool pagingTool);
+ -->
+<select id="countTotal" resultType="java.lang.Integer">
+	SELECT
+	count(*)
+FROM
+	t_task tt
+LEFT JOIN t_admin a ON tt.publish_id = a.admin_id
+INNER JOIN t_task_type ttt ON tt.task_type_id = ttt.task_type_id
+
+<where>
+	<if test="params.taskId!=null">
+		and tt.task_id=#{params.taskId}
+	</if>
+	
+	<if test="params.taskName!=null">
+		and tt.task_name=#{params.taskName}
+	</if>
+	
+	<if test="params.taskTypeId!=null">
+		and tt.task_type_id=#{params.taskTypeId}
+	</if>
+	
+	<if test="params.poupLeve!=null">
+		and tt.poup_leve=#{params.poupLeve}
+	</if>
+	
+	<if test="params.status!=null">
+		and tt.status=#{params.status}
+	</if>
+</where>
+
+</select>
+
+<!-- 
+	List<Task> selectTaskDetailList(PagingTool pagingTool);
+ -->
+<select id="selectTaskDetailList" resultMap="BaseResultMap" parameterType="com.techwells.applicationMarket.util.PagingTool">
+	select 
+    <include refid="Base_Column_List" />
+    from t_task
+    WHERE
+	STATUS = 1
+AND NOW() > start_date and end_date>NOW()
+ORDER BY
+	task_id DESC 
+limit #{startNum},#{pageSize}
+</select>
+
+<!-- 
+	int countTotalDetail(PagingTool pagingTool);
+ -->
+<select id="countTotalDetail" resultType="java.lang.Integer">
+	select 
+    count(*)
+    from t_task
+    WHERE
+	STATUS = 1
+AND NOW() > start_date and end_date>NOW()
+
+</select>
+
+
+<!-- Task selectHighLeve(); -->
+<select id="selectHighLeve" resultMap="BaseResultMap">
+	SELECT
+	*
+FROM
+	t_task
+WHERE
+	STATUS = 1
+AND now() > start_date
+AND end_date > NOW()
+ORDER BY
+	poup_leve ASC,
+	create_date DESC
+LIMIT 1
+</select>
+
+
+
+
+
+
+</mapper>

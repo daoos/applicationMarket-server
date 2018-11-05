@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.AppVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.AppVersion" >
+    <id column="app_version_id" property="appVersionId" jdbcType="INTEGER" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="app_id" property="appId" jdbcType="INTEGER" />
+    <result column="package_name" property="packageName" jdbcType="VARCHAR" />
+    <result column="version_name" property="versionName" jdbcType="VARCHAR" />
+    <result column="version_number" property="versionNumber" jdbcType="VARCHAR" />
+    <result column="version_features" property="versionFeatures" jdbcType="VARCHAR" />
+    <result column="support_sys" property="supportSys" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="VARCHAR" />
+    <result column="is_history_version" property="isHistoryVersion" jdbcType="INTEGER" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    app_version_id, logo, app_id, package_name, version_name, version_number, version_features, 
+    support_sys, size, is_history_version, introduction, download_url, deleted, activated, 
+    create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_version
+    where app_version_id = #{appVersionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_app_version
+    where app_version_id = #{appVersionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.AppVersion" >
+    <selectKey resultType="java.lang.Integer" keyProperty="appVersionId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_version (logo, app_id, package_name, 
+      version_name, version_number, version_features, 
+      support_sys, size, is_history_version, 
+      introduction, download_url, deleted, 
+      activated, create_date, update_date
+      )
+    values (#{logo,jdbcType=VARCHAR}, #{appId,jdbcType=INTEGER}, #{packageName,jdbcType=VARCHAR}, 
+      #{versionName,jdbcType=VARCHAR}, #{versionNumber,jdbcType=VARCHAR}, #{versionFeatures,jdbcType=VARCHAR}, 
+      #{supportSys,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{isHistoryVersion,jdbcType=INTEGER}, 
+      #{introduction,jdbcType=VARCHAR}, #{downloadUrl,jdbcType=VARCHAR}, #{deleted,jdbcType=INTEGER}, 
+      #{activated,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.AppVersion" >
+    <selectKey resultType="java.lang.Integer" keyProperty="appVersionId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logo != null" >
+        logo,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="packageName != null" >
+        package_name,
+      </if>
+      <if test="versionName != null" >
+        version_name,
+      </if>
+      <if test="versionNumber != null" >
+        version_number,
+      </if>
+      <if test="versionFeatures != null" >
+        version_features,
+      </if>
+      <if test="supportSys != null" >
+        support_sys,
+      </if>
+      <if test="size != null" >
+        size,
+      </if>
+      <if test="isHistoryVersion != null" >
+        is_history_version,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="downloadUrl != null" >
+        download_url,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="packageName != null" >
+        #{packageName,jdbcType=VARCHAR},
+      </if>
+      <if test="versionName != null" >
+        #{versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNumber != null" >
+        #{versionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="versionFeatures != null" >
+        #{versionFeatures,jdbcType=VARCHAR},
+      </if>
+      <if test="supportSys != null" >
+        #{supportSys,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="isHistoryVersion != null" >
+        #{isHistoryVersion,jdbcType=INTEGER},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.AppVersion" >
+    update t_app_version
+    <set >
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="packageName != null" >
+        package_name = #{packageName,jdbcType=VARCHAR},
+      </if>
+      <if test="versionName != null" >
+        version_name = #{versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNumber != null" >
+        version_number = #{versionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="versionFeatures != null" >
+        version_features = #{versionFeatures,jdbcType=VARCHAR},
+      </if>
+      <if test="supportSys != null" >
+        support_sys = #{supportSys,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="isHistoryVersion != null" >
+        is_history_version = #{isHistoryVersion,jdbcType=INTEGER},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where app_version_id = #{appVersionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.AppVersion" >
+    update t_app_version
+    set logo = #{logo,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=INTEGER},
+      package_name = #{packageName,jdbcType=VARCHAR},
+      version_name = #{versionName,jdbcType=VARCHAR},
+      version_number = #{versionNumber,jdbcType=VARCHAR},
+      version_features = #{versionFeatures,jdbcType=VARCHAR},
+      support_sys = #{supportSys,jdbcType=VARCHAR},
+      size = #{size,jdbcType=VARCHAR},
+      is_history_version = #{isHistoryVersion,jdbcType=INTEGER},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where app_version_id = #{appVersionId,jdbcType=INTEGER}
+  </update>
+  
+  
+<!-- 
+	AppVersion selectLastVersion(Integer appId);
+ -->  
+<select id="selectLastVersion" resultMap="BaseResultMap">
+	select 
+    <include refid="Base_Column_List" />
+    from t_app_version
+    WHERE
+	app_id = #{appId}
+AND is_history_version = 0 
+</select>
+  
+<!-- 
+	List<AppVersion> selectHistVersionList(Integer appId);
+ -->
+<select id="selectHistVersionList" resultMap="BaseResultMap">
+	select 
+    <include refid="Base_Column_List" />
+    from t_app_version
+    WHERE
+	app_id = #{appId}
+AND is_history_version = 1
+</select>
+  
+<!-- 
+	int changeHistoryVersion(Integer appId);
+ -->
+<update id="changeHistoryVersion">
+	update t_app_version set is_history_version=1 where app_id=#{appId} and is_history_version=0
+</update>
+  
+
+
+<!-- 
+	AppVersion selectAppVersionByPackName(String packName);
+ -->
+
+<select id="selectAppVersionByPackName" resultMap="BaseResultMap">
+	SELECT
+	*
+FROM
+	t_app_version
+WHERE
+	package_name = #{packName}
+</select>
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.AppImageMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.AppImage" >
+    <id column="app_image_id" property="appImageId" jdbcType="INTEGER" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="app_id" property="appId" jdbcType="INTEGER" />
+    <result column="image_md5" property="imageMd5" jdbcType="VARCHAR" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    app_image_id, image_url, app_id, image_md5, deleted, activated, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_image
+    where app_image_id = #{appImageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_app_image
+    where app_image_id = #{appImageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.AppImage" >
+    <selectKey resultType="java.lang.Integer" keyProperty="appImageId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_image (image_url, app_id, image_md5, 
+      deleted, activated, create_date, 
+      update_date)
+    values (#{imageUrl,jdbcType=VARCHAR}, #{appId,jdbcType=INTEGER}, #{imageMd5,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.AppImage" >
+    <selectKey resultType="java.lang.Integer" keyProperty="appImageId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_image
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="imageUrl != null" >
+        image_url,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="imageMd5 != null" >
+        image_md5,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="imageMd5 != null" >
+        #{imageMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.AppImage" >
+    update t_app_image
+    <set >
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="imageMd5 != null" >
+        image_md5 = #{imageMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where app_image_id = #{appImageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.AppImage" >
+    update t_app_image
+    set image_url = #{imageUrl,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=INTEGER},
+      image_md5 = #{imageMd5,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where app_image_id = #{appImageId,jdbcType=INTEGER}
+  </update>
+  
+  
+ <!-- 
+ 	List<AppImage> selectImages(Integer appId);
+  -->
+ <select id="selectImages" resultMap="BaseResultMap">
+ 		SELECT
+	image_url
+FROM
+	t_app_image
+WHERE
+	app_id = #{appId}
+ </select>
+ 
+ 
+</mapper>

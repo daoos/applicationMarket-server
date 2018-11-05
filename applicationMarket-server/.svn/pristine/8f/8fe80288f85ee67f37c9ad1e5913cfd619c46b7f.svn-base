@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.AppCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.AppComment" >
+    <id column="comment_id" property="commentId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="app_id" property="appId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    comment_id, content, app_id, user_id, score, deleted, activated, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_app_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.AppComment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="commentId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_comment (content, app_id, user_id, 
+      score, deleted, activated, 
+      create_date, update_date)
+    values (#{content,jdbcType=VARCHAR}, #{appId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{score,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.AppComment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="commentId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_app_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.AppComment" >
+    update t_app_comment
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.AppComment" >
+    update t_app_comment
+    set content = #{content,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  <!-- 
+  	AppComment selectAppCommentByAppIdAndUserId(@Param("userId")Integer userId,@Param("appId")Integer appId);
+   -->
+  <select id="selectAppCommentByAppIdAndUserId" resultMap="BaseResultMap">
+  		select 
+    <include refid="Base_Column_List" />
+    from t_app_comment where app_id=#{appId} and user_id=#{userId} 
+  </select>
+  
+  
+  <!-- 
+  	int countTotal(PagingTool pagingTool);
+   -->
+  <select id="countTotal" parameterType="com.techwells.applicationMarket.util.PagingTool" resultType="java.lang.Integer">
+  		SELECT
+	count(*)
+FROM
+	t_app_comment
+WHERE
+	app_id = #{params.appId}
+  </select>
+  
+ <!-- 
+ 	List<UserCommentVos> selectUserCommentVos(PagingTool pagingTool);
+  -->
+ <select id="selectUserCommentVos" parameterType="com.techwells.applicationMarket.util.PagingTool" resultType="com.techwells.applicationMarket.domain.rs.UserCommentVos">
+ 	SELECT
+	ac.comment_id AS commentId,
+	ac.user_id AS userId,
+	ac.score AS score,
+	ac.content AS content,
+	ac.create_date AS createDate,
+	u.user_icon AS userIcon,
+	u.user_name AS userName,
+	u.real_name AS realName
+FROM
+	t_app_comment ac,
+	t_user u
+WHERE
+	u.user_id = ac.user_id
+	and app_id = #{params.appId}
+	order by ac.create_date desc
+limit #{startNum},#{pageSize}
+ </select>
+  
+ 
+ <!-- 
+ 	List<ScorePercent> selectScorePercents(PagingTool pagingTool);
+  -->
+ <select id="selectScorePercents" resultType="com.techwells.applicationMarket.domain.rs.ScorePercent" parameterType="com.techwells.applicationMarket.util.PagingTool">
+ 	SELECT
+	ac.score as score,
+	ROUND(
+		count(*) / (
+			SELECT
+				count(*)
+			FROM
+				t_app_comment
+		) * 100,
+		1
+	) AS percent
+FROM
+	t_app_comment AS ac
+WHERE ac.app_id=#{params.appId}
+GROUP BY
+	ac.score
+order by score 
+ </select>
+ 
+<!-- 
+	double selectAvgScore(PagingTool pagingTool);
+ -->
+<select id="selectAvgScore" resultType="java.lang.Double">
+	SELECT
+	FORMAT(avg(score), 1) as avgScore
+FROM
+	t_app_comment
+WHERE
+	app_id = #{params.appId}
+</select>
+
+  
+  
+  
+  
+  
+  
+</mapper>

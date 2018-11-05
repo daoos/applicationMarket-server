@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.SystemConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.SystemConfig" >
+    <id column="config_id" property="configId" jdbcType="INTEGER" />
+    <result column="is_ransfer" property="isRansfer" jdbcType="INTEGER" />
+    <result column="is_need_secret" property="isNeedSecret" jdbcType="INTEGER" />
+    <result column="is_need_pwd" property="isNeedPwd" jdbcType="INTEGER" />
+    <result column="copy_right" property="copyRight" jdbcType="VARCHAR" />
+    <result column="company_phone" property="companyPhone" jdbcType="VARCHAR" />
+    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
+    <result column="moac_address" property="moacAddress" jdbcType="VARCHAR" />
+    <result column="moac_secret" property="moacSecret" jdbcType="VARCHAR" />
+    <result column="swtc_address" property="swtcAddress" jdbcType="VARCHAR" />
+    <result column="swtc_secret" property="swtcSecret" jdbcType="VARCHAR" />
+    <result column="activated" property="activated" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.techwells.applicationMarket.domain.SystemConfig" extends="BaseResultMap" >
+    <result column="about_us" property="aboutUs" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    config_id, is_ransfer, is_need_secret, is_need_pwd, copy_right, company_phone, company_address, 
+    moac_address, moac_secret, swtc_address, swtc_secret, activated, deleted, create_date, 
+    update_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    about_us
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_sys_config
+    where config_id = #{configId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sys_config
+    where config_id = #{configId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.SystemConfig" >
+    <selectKey resultType="java.lang.Integer" keyProperty="configId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_config (is_ransfer, is_need_secret, is_need_pwd, 
+      copy_right, company_phone, company_address, 
+      moac_address, moac_secret, swtc_address, 
+      swtc_secret, activated, deleted, 
+      create_date, update_date, about_us
+      )
+    values (#{isRansfer,jdbcType=INTEGER}, #{isNeedSecret,jdbcType=INTEGER}, #{isNeedPwd,jdbcType=INTEGER}, 
+      #{copyRight,jdbcType=VARCHAR}, #{companyPhone,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, 
+      #{moacAddress,jdbcType=VARCHAR}, #{moacSecret,jdbcType=VARCHAR}, #{swtcAddress,jdbcType=VARCHAR}, 
+      #{swtcSecret,jdbcType=VARCHAR}, #{activated,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{aboutUs,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.SystemConfig" >
+    <selectKey resultType="java.lang.Integer" keyProperty="configId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="isRansfer != null" >
+        is_ransfer,
+      </if>
+      <if test="isNeedSecret != null" >
+        is_need_secret,
+      </if>
+      <if test="isNeedPwd != null" >
+        is_need_pwd,
+      </if>
+      <if test="copyRight != null" >
+        copy_right,
+      </if>
+      <if test="companyPhone != null" >
+        company_phone,
+      </if>
+      <if test="companyAddress != null" >
+        company_address,
+      </if>
+      <if test="moacAddress != null" >
+        moac_address,
+      </if>
+      <if test="moacSecret != null" >
+        moac_secret,
+      </if>
+      <if test="swtcAddress != null" >
+        swtc_address,
+      </if>
+      <if test="swtcSecret != null" >
+        swtc_secret,
+      </if>
+      <if test="activated != null" >
+        activated,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="aboutUs != null" >
+        about_us,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="isRansfer != null" >
+        #{isRansfer,jdbcType=INTEGER},
+      </if>
+      <if test="isNeedSecret != null" >
+        #{isNeedSecret,jdbcType=INTEGER},
+      </if>
+      <if test="isNeedPwd != null" >
+        #{isNeedPwd,jdbcType=INTEGER},
+      </if>
+      <if test="copyRight != null" >
+        #{copyRight,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhone != null" >
+        #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="moacAddress != null" >
+        #{moacAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="moacSecret != null" >
+        #{moacSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="swtcAddress != null" >
+        #{swtcAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="swtcSecret != null" >
+        #{swtcSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="activated != null" >
+        #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aboutUs != null" >
+        #{aboutUs,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.SystemConfig" >
+    update t_sys_config
+    <set >
+      <if test="isRansfer != null" >
+        is_ransfer = #{isRansfer,jdbcType=INTEGER},
+      </if>
+      <if test="isNeedSecret != null" >
+        is_need_secret = #{isNeedSecret,jdbcType=INTEGER},
+      </if>
+      <if test="isNeedPwd != null" >
+        is_need_pwd = #{isNeedPwd,jdbcType=INTEGER},
+      </if>
+      <if test="copyRight != null" >
+        copy_right = #{copyRight,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhone != null" >
+        company_phone = #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="moacAddress != null" >
+        moac_address = #{moacAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="moacSecret != null" >
+        moac_secret = #{moacSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="swtcAddress != null" >
+        swtc_address = #{swtcAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="swtcSecret != null" >
+        swtc_secret = #{swtcSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="activated != null" >
+        activated = #{activated,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aboutUs != null" >
+        about_us = #{aboutUs,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where config_id = #{configId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.techwells.applicationMarket.domain.SystemConfig" >
+    update t_sys_config
+    set is_ransfer = #{isRansfer,jdbcType=INTEGER},
+      is_need_secret = #{isNeedSecret,jdbcType=INTEGER},
+      is_need_pwd = #{isNeedPwd,jdbcType=INTEGER},
+      copy_right = #{copyRight,jdbcType=VARCHAR},
+      company_phone = #{companyPhone,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      moac_address = #{moacAddress,jdbcType=VARCHAR},
+      moac_secret = #{moacSecret,jdbcType=VARCHAR},
+      swtc_address = #{swtcAddress,jdbcType=VARCHAR},
+      swtc_secret = #{swtcSecret,jdbcType=VARCHAR},
+      activated = #{activated,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      about_us = #{aboutUs,jdbcType=LONGVARCHAR}
+    where config_id = #{configId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.SystemConfig" >
+    update t_sys_config
+    set is_ransfer = #{isRansfer,jdbcType=INTEGER},
+      is_need_secret = #{isNeedSecret,jdbcType=INTEGER},
+      is_need_pwd = #{isNeedPwd,jdbcType=INTEGER},
+      copy_right = #{copyRight,jdbcType=VARCHAR},
+      company_phone = #{companyPhone,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      moac_address = #{moacAddress,jdbcType=VARCHAR},
+      moac_secret = #{moacSecret,jdbcType=VARCHAR},
+      swtc_address = #{swtcAddress,jdbcType=VARCHAR},
+      swtc_secret = #{swtcSecret,jdbcType=VARCHAR},
+      activated = #{activated,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where config_id = #{configId,jdbcType=INTEGER}
+  </update>
+</mapper>
