@@ -18,7 +18,7 @@ import com.googlecode.jsonrpc4j.spring.rest.JsonRpcRestClient;
  *
  */
 public class MoacUtils {
-	private final static String SERVER_ADDRESS=" http://47.92.101.153:8545"; //服务器的地址
+	private final static String SERVER_ADDRESS="http://47.92.101.153:8545"; //服务器的地址
 	
 	private final static String MC_GETBALANCE="mc_getBalance";   //查询余额的方法
 	
@@ -61,6 +61,7 @@ public class MoacUtils {
 //		params[0]=address;  //钱包的地址  
 //		params[1]="latest";   //获取最新的余额信息
 		String b=client.invoke(MC_BLOCAKNUMBER, params,String.class);  //返回十六进制的余额
+		
 		return String.valueOf(Long.parseLong(b.substring(2),16));
 	}
 	
@@ -83,16 +84,19 @@ public class MoacUtils {
 	
 	@Test
 	public void test4() throws Throwable{
-		String hash=sendTransaction("0x4a1a050e9e657c19e9a2678df202fc72a12f6afb", "0x3dfdaaecc881d878b0bd436145e3fb548054b6b0", "1", "0x");
-		System.out.println(hash);
+		System.out.println(getBalance("0x4a1a050e9e657c19e9a2678df202fc72a12f6afb"));
 	}
 	
 	
 	
 	
 	@Test
-	public void test3(){
-		
+	public void test3() throws Throwable{
+		JsonRpcHttpClient client=new JsonRpcHttpClient(new URL(SERVER_ADDRESS));
+		String[] params=new String[2];    //封装请求参数
+		params[0]="0x4a1a050e9e657c19e9a2678df202fc72a12f6afb";  //钱包的地址  
+		params[1]="0xdeadbeaf";   //获取最新的余额信息
+		String b=client.invoke("mc_sign", params,String.class);  //返回十六进制的余额
 	}
 	
 	

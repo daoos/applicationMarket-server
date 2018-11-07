@@ -9,11 +9,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.util.StopWatch.TaskInfo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.web3j.abi.datatypes.Int;
 
 import com.alibaba.druid.util.StringUtils;
 import com.techwells.applicationMarket.domain.Task;
@@ -30,6 +32,9 @@ import com.techwells.applicationMarket.util.ResultInfo;
  */
 @RestController
 public class TaskController {
+	
+	private Logger logger=Logger.getLogger(TaskController.class);  //日志管理
+	
 	@Resource
 	private TaskService taskService;
 	
@@ -178,7 +183,6 @@ public class TaskController {
 		}
 	}
 	
-	
 	/**
 	 * 获取任务详情
 	 * @param taskId  任务Id
@@ -205,7 +209,6 @@ public class TaskController {
 		}
 		
 	}
-	
 	
 	/**
 	 * 删除任务
@@ -378,7 +381,6 @@ public class TaskController {
 	
 	/**
 	 * 获取任务清单 分页  前台
-	 * 
 	 * @param request
 	 * @return
 	 */
@@ -467,7 +469,6 @@ public class TaskController {
 	@RequestMapping("/task/upload")
 	public Object upload(@RequestParam(value="file")MultipartFile file){
 		ResultInfo resultInfo=new ResultInfo();
-		
 		String fileName=file.getOriginalFilename();
 		String path=ApplicationMarketConstants.UPLOAD_PATH+"task-image/";
 		File targetFile=new File(path,fileName);
@@ -485,8 +486,6 @@ public class TaskController {
 		resultInfo.setResult(url);
 		return resultInfo;
 	}
-	
-	
 	
 	/**
 	 * 修改任务
@@ -603,25 +602,42 @@ public class TaskController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * 立即完成任务 前台
+	 * 1、显示的都是满足开始时间和结束时间，没有失效的，不用控制
+	 * 2、需要验证用户是否达到了最大的完成次数
+	 * @return
+	 */
+	@RequestMapping("/task/finishTask")
+	public Object finishTask(HttpServletRequest request){
+		ResultInfo resultInfo=new ResultInfo();
+		String userId=request.getParameter("userId");   //用户Id
+		String taskId=request.getParameter("taskId");   //任务Id
+		
+		
+		//校验
+		if (StringUtils.isEmpty(userId)) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("用户Id不能为空");
+			return resultInfo;
+		}
+		
+		if (StringUtils.isEmpty(taskId)) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("任务Id不能为空");
+			return resultInfo;
+		}
+		
+		//调用service的方法
+		try {
+			Object object=taskService.finishTask(Integer.parseInt(userId),Integer.parseInt(taskId));
+			return object;
+		} catch (Exception e) {
+			logger.error("完成任务异常",e);   //记录日志
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("完成任务异常");
+			return resultInfo;
+		}
+	}
 	
 }

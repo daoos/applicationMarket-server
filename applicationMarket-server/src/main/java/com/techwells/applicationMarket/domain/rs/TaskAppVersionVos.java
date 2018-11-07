@@ -20,7 +20,14 @@ public class TaskAppVersionVos {
 	private String introduction;   //任务简介
     private Integer taskTypeId;  //任务类型Id
     private String taskName;  //任务名称
+    private String packageName;  //包名
     
+	public String getPackageName() {
+		return packageName;
+	}
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
 	public String getDownloadUrl() {
 		return downloadUrl;
 	}

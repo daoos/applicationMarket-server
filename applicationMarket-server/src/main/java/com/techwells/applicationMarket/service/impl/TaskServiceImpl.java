@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.techwells.applicationMarket.dao.AppMapper;
@@ -41,6 +42,9 @@ import com.techwells.applicationMarket.util.swtc.SwtcUtils;
 
 @Service
 public class TaskServiceImpl implements TaskService{
+	
+	private Logger logger=Logger.getLogger(TaskServiceImpl.class);  //日志记录
+	
 	
 	@Resource
 	private TaskMapper taskMapper;
@@ -179,6 +183,7 @@ public class TaskServiceImpl implements TaskService{
 					taskApp.setActivated(task.getActivated());   //奖励的类型
 					taskApp.setTaskTypeId(task.getTaskTypeId());  //任务类型的Id
 					taskApp.setTaskName(task.getTaskName());
+					taskApp.setPackageName(appVersion.getPackageName());
 				}
 			}else {   //如果是其他类型的，直接返回信息即可
 				taskApp=new TaskAppVersionVos();
@@ -350,6 +355,77 @@ public class TaskServiceImpl implements TaskService{
 		}
 		
 		resultInfo.setMessage("领取成功");
+		return resultInfo;
+	}
+
+	/**
+	 * 验证用户完成的次数、失效、开始时间和结束时间
+	 */
+	@Override
+	public Object finishTask(Integer userId, Integer taskId) throws Exception {
+		ResultInfo resultInfo=new ResultInfo();
+		
+		//获取任务信息
+		Task task=taskMapper.selectByPrimaryKey(taskId);
+		
+		if (task==null) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("该任务不存在");
+			return resultInfo;
+		}
+		
+		if (task.getStatus().equals(0)) {   //失效
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("任务已经失效");
+			return resultInfo;
+		}
+		
+		
+		//验证时间
+		if (!(task.getStartDate().getTime()<System.currentTimeMillis()&&System.currentTimeMillis()<task.getEndDate().getTime())) { 
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("任务还未开始或者已经结束");
+			return resultInfo;
+		}
+		
+		
+		//根据用户Id和任务Id获取用户完成任务的信息
+		
+		List<UserTask> userTasks=userTaskMapper.selectUserTasksListByUserIdAndTaskId(userId, taskId);
+		
+		if (userTasks.size()>=task.getAllowNumber()) {   //如果完成次数已经达到了最大完成的次数
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("已经达到最大完成次数");
+			return resultInfo;
+		}
+		
+		//没有达到最大完成次数，那么直接添加一条记录即可
+		UserTask userTask=new UserTask();
+		userTask.setCreateDate(new Date());
+		userTask.setStatus(2);  //待发放
+		userTask.setUserId(userId);
+		userTask.setTaskId(taskId);
+		userTask.setActivated(task.getActivated());  //奖励金额的类型
+		userTask.setMoney(task.getRewardMoney());  //奖励的钱
+		
+		String content=null;
+		if (task.getActivated().equals(1)) {  //领取墨客币
+			content=task.getTaskName()+"领取墨客币+"+task.getRewardMoney();
+		}else {  //井通
+			content=task.getTaskName()+"领取井通+"+task.getRewardMoney();
+		}
+		
+		userTask.setContent(content);
+		
+		//插入
+		int count=userTaskMapper.insertSelective(userTask);
+		
+		if (count==0) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("添加任务记录失败");
+			return resultInfo;
+		}
+		resultInfo.setMessage("任务完成成功");
 		return resultInfo;
 	}
 	

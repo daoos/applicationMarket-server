@@ -159,4 +159,14 @@
     from t_user_task_detail where user_id=#{userId}
 </select>
 
+<!-- 
+	List<UserTask> selectUserTasksListByUserIdAndTaskId(@Param("userId")Integer userId,@Param("taskId")Integer taskId);
+ -->
+<select id="selectUserTasksListByUserIdAndTaskId" resultMap="BaseResultMap">
+	select 
+    <include refid="Base_Column_List" />
+    from t_user_task_detail where user_id=#{userId} and task_id=#{taskId}
+</select>
+
+
 </mapper>

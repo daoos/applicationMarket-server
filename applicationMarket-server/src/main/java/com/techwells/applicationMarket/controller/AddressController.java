@@ -1,5 +1,6 @@
 package com.techwells.applicationMarket.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,6 +22,8 @@ public class AddressController {
 	@Resource
 	private AddressService addressService;
 	
+	private Logger logger=Logger.getLogger(AddressController.class);  //日志管理
+	
 	/**
 	 * 获取所有省份的信息
 	 * @return
@@ -28,11 +31,11 @@ public class AddressController {
 	@RequestMapping("/address/getProvinces")
 	public Object getProvinces(){
 		ResultInfo resultInfo=new ResultInfo();
-		
 		try {
 			Object object=addressService.getProvinces();
 			return object;
 		} catch (Exception e) {
+			logger.error("获取省份异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("获取异常");
 			return resultInfo;

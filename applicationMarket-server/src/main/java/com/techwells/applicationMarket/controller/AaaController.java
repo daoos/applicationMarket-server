@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,6 @@ import com.techwells.applicationMarket.util.ResultInfo;
 /**
  * Aaa的controller
  * @author 陈加兵
- *
  */
 @RestController
 public class AaaController {
@@ -26,8 +26,10 @@ public class AaaController {
 	@Resource
 	private AaaService aaaService;
 	
+	private Logger logger=Logger.getLogger(AaaController.class);  //日志管理
+	
 	/**
-	 * 添加
+	 * 添加模板
 	 * @param request
 	 * @return
 	 */
@@ -51,6 +53,7 @@ public class AaaController {
 			Object object=aaaService.addAaa(aaa);
 			return object;
 		} catch (Exception e) {
+			logger.error("添加模板异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("异常");
 			return resultInfo;
@@ -60,7 +63,7 @@ public class AaaController {
 	
 	
 	/**
-	 * 获取详情
+	 * 获取模板详情
 	 * @param request
 	 * @return
 	 */
@@ -80,6 +83,7 @@ public class AaaController {
 			Object object=aaaService.getAaaById(Integer.parseInt(aaaId));
 			return object;
 		} catch (Exception e) {
+			logger.error("获取模板详情异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("异常");
 			return resultInfo;
@@ -112,6 +116,7 @@ public class AaaController {
 			Object object=aaaService.modifyAaa(aaa);
 			return object;
 		} catch (Exception e) {
+			logger.error("修改模板异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("异常");
 			return resultInfo;
@@ -121,7 +126,7 @@ public class AaaController {
 	
 	
 	/**
-	 * 删除模版
+	 * 根据Id删除模版
 	 * @param request
 	 * @return
 	 */
@@ -141,6 +146,7 @@ public class AaaController {
 			Object object=aaaService.deleteAaa(Integer.parseInt(aaaId));
 			return object;
 		} catch (Exception e) {
+			logger.error("根据Id删除模板异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("异常");
 			return resultInfo;
@@ -186,16 +192,10 @@ public class AaaController {
 			Object object=aaaService.getAaaList(pagingTool);
 			return object;
 		} catch (Exception e) {
+			logger.error("获取模板列表异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("异常");
 			return resultInfo;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 }

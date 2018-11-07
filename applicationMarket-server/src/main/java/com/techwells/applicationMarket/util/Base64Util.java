@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.zxing.aztec.decoder.Decoder;
 import com.techwells.applicationMarket.util.ApplicationMarketConstants;
 import com.techwells.applicationMarket.util.UploadImageUtil;
 import com.techwells.applicationMarket.util.VideoUtil;
@@ -23,24 +24,12 @@ import sun.misc.BASE64Encoder;
 public class Base64Util {
 
 	//截取视频的插件位置
-	private static String ffmpegLocation = "C:\\Users\\Administrator\\Downloads\\ffmpeg-4.0-win64-static\\bin\\ffmpeg.exe";
-
-	public static void main(String[] args) throws Exception {
-//		String videoPath="C:\\Users\\Administrator\\Videos\\01e7b8b10c2a7e1c80e9b25f1fc3e303.mp4";
-//		String targetPath="C:\\Users\\Administrator\\Videos\\Proecess\\";
-//		byte[] data=GenerateImage(GetBase64(videoPath));
-//		Map<String, Object> map=saveVideoToLocal(data,targetPath);
-//		System.out.println(map.get("videoLength"));
-//		System.out.println(map.get("firstFrame"));
-//		String imagePath="C:\\Users\\Administrator\\Pictures\\1533695522337.jpg";
-//		String target="C:\\Users\\Administrator\\Pictures\\thum\\";
-//		System.out.println(GetBase64(imagePath));
-//		saveImageToLocal(GenerateImage(GetBase64(imagePath)), target);
-//		
-		
-		System.out.println(Base64Util.GetBase64("C:\\Users\\Administrator\\Pictures\\1533695573666.png"));
-	}
-
+	private static final String ffmpegLocation = "C:\\Users\\Administrator\\Downloads\\ffmpeg-4.0-win64-static\\bin\\ffmpeg.exe";
+	
+	
+	private Base64Util(){}
+	
+	
 	/**
 	 * 将指定位置的图片或者视频编码成base64
 	 * @param filePath
@@ -147,6 +136,65 @@ public class Base64Util {
 		map.put("firstFrame", firstFrame);
 		return map;
 	}
+	
+	
+	
+	/**
+	 * 将字符串使用base64进行编码
+	 * @param data  编码之后的字符串
+	 * @return
+	 */
+	public static String encoder(String data)throws Exception{
+		BASE64Encoder encoder = new BASE64Encoder();
+		return encoder.encode(data.getBytes());// 返回Base64编码过的字节数组字符
+	}
+	
+	/**
+	 * 将指定的字符串解码
+	 * @param data  解码之后的字符串
+	 * @return
+	 * @throws IOException
+	 */
+	public static String Decoder(String data) throws IOException{
+		BASE64Decoder decoder = new BASE64Decoder();
+		byte[] b=decoder.decodeBuffer(data);
+		return new String(b);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

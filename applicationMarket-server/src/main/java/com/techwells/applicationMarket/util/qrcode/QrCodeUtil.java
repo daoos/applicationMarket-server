@@ -37,10 +37,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 /**
  * 二维码生成和读的工具类
- *
  */
 public class QrCodeUtil {
-
 	/*
 	 * 定义二维码的宽高
 	 */
@@ -92,7 +90,7 @@ public class QrCodeUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		createZxingqrCode("陈加兵", new File("C:\\images\\a.png"), 200, 200, "png");
+		createZxingqrCode("http://www.baidu.com", new File("C:\\images\\a.png"), 200, 200, "png");
 	}
 
 }

@@ -837,7 +837,6 @@ public class AppController {
 		}
 
 		// 调用service层的方法
-
 		try {
 			Object object = appService.getAppDetail(Integer.parseInt(appId));
 			return object;

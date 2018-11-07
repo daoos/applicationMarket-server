@@ -1,7 +1,9 @@
 package test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +15,9 @@ import javax.swing.Spring;
 import org.apache.ibatis.javassist.expr.NewArray;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import com.google.gson.Gson;
 import com.techwells.applicationMarket.dao.AppMapper;
@@ -40,13 +45,20 @@ public class AppTest {
 	}
 	
 	
+	@SuppressWarnings("restriction")
 	@Test
 	public void test2(){
-		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("a", 10);
-		System.out.println((Integer)map.get("a")instanceof Integer);
-		
-		
+		BASE64Encoder encoder = new BASE64Encoder();
+		String a=encoder.encode("spxkiWNim47uP3jecBjcf2wwHVCDe".getBytes());// 返回Base64编码过的字节数组字符
+		System.out.println(a);
+	}
+	
+	@SuppressWarnings("restriction")
+	@Test
+	public void test3() throws IOException{
+		BASE64Decoder decoder = new BASE64Decoder();
+		byte[] b=decoder.decodeBuffer("c3B4a2lXTmltNDd1UDNqZWNCamNmMnd3SFZDRGU=");
+		System.out.println(new String(b));
 	}
 	
 

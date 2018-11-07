@@ -77,8 +77,7 @@
   		<result column="download_url" property="downloadUrl"/>
   		<result column="develop_company" property="developCompany"/>
   		<result column="download_url" property="downloadUrl"/>
-  		
-  		
+  		<result column="package_name" property="packageName"/>
   		<collection property="appImages" ofType="com.techwells.applicationMarket.domain.AppImage">
   			<result column="image_url" property="imageUrl"/>
   		</collection>
@@ -730,7 +729,8 @@ AND a.ground_status = 1 and now()>=publish_date and a.app_id=#{appId}
 	av.size,
 	av.download_url,
 	a.develop_company,
-	av.download_url
+	av.download_url,
+	av.package_name
 FROM
 	t_app a,
 	t_app_version av,

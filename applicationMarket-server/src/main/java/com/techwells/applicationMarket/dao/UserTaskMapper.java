@@ -29,6 +29,16 @@ public interface UserTaskMapper {
     List<UserTask> selectUserTaskList(Integer userId);
     
     
+    /**
+     * 根据用户Id和任务Id获取信息
+     * @param userId  用户Id
+     * @param taskId  任务Id
+     * @return
+     */
+    List<UserTask> selectUserTasksListByUserIdAndTaskId(@Param("userId")Integer userId,@Param("taskId")Integer taskId);
+    
+    
+    
     
     
     

@@ -2,9 +2,11 @@ package com.techwells.applicationMarket.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.stereotype.Service;
 
 import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
@@ -47,8 +49,13 @@ public class AdminServiceImpl implements AdminService{
 		//密码相同，那么登录成功，返回权限列表
 		AdminAuthority authority=adminAuthorityMapper.selectByPrimaryKey(admin.getAdminId());
 		
+		Map<String, Object> map=new HashedMap<String, Object>();
+		map.put("authoritys", authority.getAuthoritys().split(","));
+		map.put("adminId", admin.getAdminId());
+		map.put("admin", admin);
+		
 		resultInfo.setMessage("登录成功");	
-		resultInfo.setResult(authority);
+		resultInfo.setResult(map);
 		resultInfo.setTotal(1);
 		return resultInfo;
 	}
@@ -56,6 +63,18 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Object addAdmin(Admin admin,AdminAuthority adminAuthority) throws Exception {
 		ResultInfo resultInfo=new ResultInfo();
+		
+		//检查管理员账号是否已经存在（存在的）
+		Admin admin2=adminMapper.selectAdminByAccount(admin.getAccount(), null);  
+		
+		if (admin2!=null) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("该账号已经存在");
+			return resultInfo;
+		}
+		
+		
+		
 		int count=adminMapper.insertSelective(admin);
 		
 		if (count==0) {

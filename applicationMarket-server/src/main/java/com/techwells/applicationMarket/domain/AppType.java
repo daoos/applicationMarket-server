@@ -11,6 +11,8 @@ public class AppType {
 
     private String logo;
 
+    private String smallIcon;
+
     private Integer isHot;
 
     private Integer top;
@@ -59,6 +61,14 @@ public class AppType {
 
     public void setLogo(String logo) {
         this.logo = logo == null ? null : logo.trim();
+    }
+
+    public String getSmallIcon() {
+        return smallIcon;
+    }
+
+    public void setSmallIcon(String smallIcon) {
+        this.smallIcon = smallIcon == null ? null : smallIcon.trim();
     }
 
     public Integer getIsHot() {

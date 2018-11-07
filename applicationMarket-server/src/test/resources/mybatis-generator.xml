@@ -58,11 +58,11 @@
 				sqlStatement="SELECT LAST_INSERT_ID()"></generatedKey>
 		</table> --> 
 		
-		<table tableName="t_wallet" domainObjectName="Wallet"
+		<table tableName="t_app_type" domainObjectName="AppType"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
-			<generatedKey column="wallet_id" identity="true"
+			<generatedKey column="app_type_id" identity="true"
 				sqlStatement="SELECT LAST_INSERT_ID()"></generatedKey> 
 		</table>
 		

@@ -29,9 +29,14 @@ public class AppVersionImageVos {
 	private String moneyName;  //代币名称
 	private Integer platform;  //平台信息
 	private String downloadUrl;  //下载链接
+	private String packageName;  //包名
 	
-	
-	
+	public String getPackageName() {
+		return packageName;
+	}
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
 	public String getDownloadUrl() {
 		return downloadUrl;
 	}

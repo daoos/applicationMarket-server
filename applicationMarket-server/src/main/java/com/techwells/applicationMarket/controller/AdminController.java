@@ -117,17 +117,17 @@ public class AdminController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/admin/add")
+	@RequestMapping("/admin/addAdmin")
 	public Object addAdmin(HttpServletRequest request){
 		ResultInfo resultInfo=new ResultInfo();
-		String email=request.getParameter("email");
-		String password=request.getParameter("password");
-		String account=request.getParameter("account");
-		String mobile=request.getParameter("mobile");
-		String activated=request.getParameter("activated");
+		String email=request.getParameter("email");  //邮箱
+		String password=request.getParameter("password");  //密码
+		String account=request.getParameter("account");  //账号 
+		String mobile=request.getParameter("mobile");  //手机号码
+		String activated=request.getParameter("activated");    //状态 账号状态  1 启用 0 禁用
 		String authoritys=request.getParameter("authoritys");  //权限列表，用逗号分割
 //		String deptId=request.getParameter("deptId");
-		String description=request.getParameter("description");  
+		String description=request.getParameter("description");   //权限描述
 		
 		//校验参数
 		if (StringUtils.isEmpty(email)) {
@@ -179,25 +179,6 @@ public class AdminController {
 //		}
 		
 		//校验格式
-		
-		if (!StringUtil.isEmail(email)) {
-			resultInfo.setCode("-1");
-			resultInfo.setMessage("邮箱格式错误");
-			return resultInfo;
-		}
-		
-		
-		if (!StringUtil.isMobile(mobile)) {
-			resultInfo.setCode("-1");
-			resultInfo.setMessage("手机号码格式错误");
-			return resultInfo;
-		}
-		
-//		if (!StringUtil.isNumber(deptId)) {
-//			resultInfo.setCode("-1");
-//			resultInfo.setMessage("部门Id只能是数字");
-//			return resultInfo;
-//		}
 		
 		Admin admin=new Admin();
 		admin.setAccount(account);

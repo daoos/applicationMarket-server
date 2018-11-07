@@ -6,7 +6,10 @@
     <result column="type_name" property="typeName" jdbcType="VARCHAR" />
     <result column="app_count" property="appCount" jdbcType="INTEGER" />
     <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="small_icon" property="smallIcon" jdbcType="VARCHAR" />
     <result column="is_hot" property="isHot" jdbcType="INTEGER" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="top_time" property="topTime" jdbcType="TIMESTAMP" />
     <result column="font" property="font" jdbcType="VARCHAR" />
     <result column="color" property="color" jdbcType="VARCHAR" />
     <result column="deleted" property="deleted" jdbcType="INTEGER" />
@@ -15,8 +18,8 @@
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    app_type_id, type_name, app_count, logo, is_hot, font, color, deleted, activated, 
-    create_date, update_date
+    app_type_id, type_name, app_count, logo, small_icon, is_hot, top, top_time, font, 
+    color, deleted, activated, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -33,11 +36,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_app_type (type_name, app_count, logo, 
-      is_hot, font, color, 
+      small_icon, is_hot, top, 
+      top_time, font, color, 
       deleted, activated, create_date, 
       update_date)
     values (#{typeName,jdbcType=VARCHAR}, #{appCount,jdbcType=INTEGER}, #{logo,jdbcType=VARCHAR}, 
-      #{isHot,jdbcType=INTEGER}, #{font,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}, 
+      #{smallIcon,jdbcType=VARCHAR}, #{isHot,jdbcType=INTEGER}, #{top,jdbcType=INTEGER}, 
+      #{topTime,jdbcType=TIMESTAMP}, #{font,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}, 
       #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
@@ -56,8 +61,17 @@
       <if test="logo != null" >
         logo,
       </if>
+      <if test="smallIcon != null" >
+        small_icon,
+      </if>
       <if test="isHot != null" >
         is_hot,
+      </if>
+      <if test="top != null" >
+        top,
+      </if>
+      <if test="topTime != null" >
+        top_time,
       </if>
       <if test="font != null" >
         font,
@@ -88,8 +102,17 @@
       <if test="logo != null" >
         #{logo,jdbcType=VARCHAR},
       </if>
+      <if test="smallIcon != null" >
+        #{smallIcon,jdbcType=VARCHAR},
+      </if>
       <if test="isHot != null" >
         #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="top != null" >
+        #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        #{topTime,jdbcType=TIMESTAMP},
       </if>
       <if test="font != null" >
         #{font,jdbcType=VARCHAR},
@@ -123,8 +146,17 @@
       <if test="logo != null" >
         logo = #{logo,jdbcType=VARCHAR},
       </if>
+      <if test="smallIcon != null" >
+        small_icon = #{smallIcon,jdbcType=VARCHAR},
+      </if>
       <if test="isHot != null" >
         is_hot = #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="top != null" >
+        top = #{top,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        top_time = #{topTime,jdbcType=TIMESTAMP},
       </if>
       <if test="font != null" >
         font = #{font,jdbcType=VARCHAR},
@@ -152,7 +184,10 @@
     set type_name = #{typeName,jdbcType=VARCHAR},
       app_count = #{appCount,jdbcType=INTEGER},
       logo = #{logo,jdbcType=VARCHAR},
+      small_icon = #{smallIcon,jdbcType=VARCHAR},
       is_hot = #{isHot,jdbcType=INTEGER},
+      top = #{top,jdbcType=INTEGER},
+      top_time = #{topTime,jdbcType=TIMESTAMP},
       font = #{font,jdbcType=VARCHAR},
       color = #{color,jdbcType=VARCHAR},
       deleted = #{deleted,jdbcType=INTEGER},

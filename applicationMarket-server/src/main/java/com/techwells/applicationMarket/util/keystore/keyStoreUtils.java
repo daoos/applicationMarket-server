@@ -2,8 +2,10 @@ package com.techwells.applicationMarket.util.keystore;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import org.aspectj.apache.bcel.generic.InstructionConstants.Clinit;
 import org.junit.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
@@ -21,6 +23,8 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
 
+import com.googlecode.jsonrpc4j.JsonRpcHttpClient;
+
 
 /**
  * keystore文件的工具类
@@ -28,7 +32,7 @@ import org.web3j.utils.Numeric;
  */
 public class keyStoreUtils {
 	
-	/**
+	/**t
 	 * 创建一个钱包，生成keystore文件
 	 * @param path 钱包的路径（不包括文件名称）
 	 * @param password 钱包的密码
@@ -119,7 +123,7 @@ public class keyStoreUtils {
 
 	
 	@Test
-	public void test4() throws Exception{
+	public void test4() throws Throwable{
 		//设置需要的矿工费
         BigInteger GAS_PRICE = BigInteger.valueOf(22_000_000_000L);
         BigInteger GAS_LIMIT = BigInteger.valueOf(4_300_000);
@@ -127,33 +131,59 @@ public class keyStoreUtils {
         //调用的是kovan测试环境，这里使用的是infura这个客户端
         Web3j web3j = Web3j.build(new HttpService("http://47.92.101.153:8545"));
         //转账人账户地址
-        String ownAddress = "0x4a1a050e9e657c19e9a2678df202fc72a12f6afb";
+        String ownAddress = "0x0bd3c0b16dc0d210cc8b42345d089ddafac9c55c";
         //被转人账户地址
         String toAddress = "0x842979507ca3dbb94392fb076f2555c7ff483d78";
         //转账人私钥
-        Credentials credentials = Credentials.create("bbeeec3ce5279b197efc2a6ae2598df0bb461bff6ee43e702e5c8d1342fdee9a");
+        Credentials credentials = Credentials.create("733f3188ed94196b4f4c40beed0790debfe005f179728a252f2231a4a05d24e3");
 
         //getNonce（这里的Nonce我也不是很明白，大概是交易的笔数吧）
         EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(
                 ownAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
         BigInteger nonce = ethGetTransactionCount.getTransactionCount();
-
+        
+        System.err.println(nonce);
+        
+        
+//      JsonRpcHttpClient client=new JsonRpcHttpClient(new URL("http://47.92.101.153:8545"));
+//		String[] params=new String[2];    //封装请求参数
+//		params[0]="0x0bd3c0b16dc0d210cc8b42345d089ddafac9c55c";  //钱包的地址  
+//		params[1]="latest";   //获取最新的余额信息
+//		String b=client.invoke("mc_getTransactionCount", params,String.class);  //返回十六进制的余额
+        
         //创建交易，这里是转0.5个以太币
         BigInteger value = Convert.toWei("0.1", Convert.Unit.ETHER).toBigInteger();
+        
         RawTransaction rawTransaction = RawTransaction.createEtherTransaction(
-                nonce, GAS_PRICE, GAS_LIMIT, toAddress, value);
+                BigInteger.valueOf(0), GAS_PRICE, GAS_LIMIT, toAddress, BigInteger.valueOf(1));
 
         //签名Transaction，这里要对交易做签名
         byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+        
         String hexValue = Numeric.toHexString(signedMessage);
+        
+        System.out.println(hexValue.length());
+        
+        
+        
+//        JsonRpcHttpClient client=new JsonRpcHttpClient(new URL("http://47.92.101.153:8545"));
+//		String[] params=new String[1];    //封装请求参数
+//		params[0]="0xf86e12808504a817c800829c4094dc74dfdde12cf553d39dcf22d7d51258f4f76fe3865af3107a400000808081eaa0f9a2008d6773a4aa72f0c4474f8202337163f017aa3667b5fba7456e80e23936a022f7e74ba0c0b041fc2b04c0dbf5cd6c2deebe5e3aeb6326e7699470b59e8cb2";  //钱包的地址  
+////		params[1]="lat  est";   //获取最新的余额信息
+//		
+//		
+//		
+//        String hash=client.invoke("mc_sendRawTransaction", params,String.class);
+//        System.out.println(hash);
+        
 
         //发送交易
-        EthSendTransaction ethSendTransaction =
-                web3j.ethSendRawTransaction(hexValue).sendAsync().get();
-        String transactionHash = ethSendTransaction.getTransactionHash();
-
-        //获得到transactionHash后就可以到以太坊的网站上查询这笔交易的状态了
-        System.out.println(transactionHash);
+//        EthSendTransaction ethSendTransaction =
+//                web3j.ethSendRawTransaction(hexValue).sendAsync().get();
+//        String transactionHash = ethSendTransaction.getTransactionHash();
+//
+//        //获得到transactionHash后就可以到以太坊的网站上查询这笔交易的状态了
+//        System.out.println(transactionHash);
 	}
 	
 	

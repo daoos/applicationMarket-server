@@ -52,6 +52,15 @@ public interface TaskService {
 	 */
 	Object receiveReward(Integer taskDetailId)throws Exception;
 	
+	/**
+	 * 立即完成任务
+	 * @param userId
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
+	Object finishTask(Integer userId, Integer taskId)throws Exception;
+	
 	
 	
 	
