@@ -17,8 +17,8 @@
 
 	<!-- <import resource="classpath:spring-redis.xml"/> -->
 	
-	<!-- 引入定时调度的配置文件 -->
-	<!-- <import resource="classpath:spring-quartz.xml"/> -->
+	<!-- 引入定时调度的配置文件 
+	<import resource="classpath:spring-quartz.xml"/>-->
 	
 	<context:property-placeholder location="classpath:jdbc.properties"/>
 	

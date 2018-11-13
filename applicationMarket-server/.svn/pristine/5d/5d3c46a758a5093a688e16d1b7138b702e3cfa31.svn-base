@@ -1,0 +1,36 @@
+package test;
+
+import java.util.List;
+
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
+public class TestSpider {
+	public static void main(String[] args) throws Exception {
+        // 创建webclient
+        WebClient webClient = new WebClient();
+        // 取消 JS 支持
+        webClient.getOptions().setJavaScriptEnabled(true);
+        // 取消 CSS 支持
+        webClient.getOptions().setCssEnabled(false);
+        // 获取指定网页实体
+        HtmlPage page = (HtmlPage) webClient.getPage("http://localhost:8080/shake-server/swagger-ui.html");
+        System.err.println(page.asText());
+        // 获取搜索输入框
+//        HtmlInput input = (HtmlInput) page.getHtmlElementById("input");
+//        // 往输入框 “填值”
+//        input.setValueAttribute("larger5");
+//        // 获取搜索按钮
+//        HtmlInput btn = (HtmlInput) page.getHtmlElementById("search-button");
+//        // “点击” 搜索
+//        HtmlPage page2 = btn.click();
+        // 选择元素
+//        List<HtmlElement> spanList=page2.getByXPath("//h3[@class='res-title']/a");
+//        for(int i=0;i<spanList.size();i++) {
+//            // 输出新页面的文本
+//            System.out.println(i+1+"、"+spanList.get(i).asText());
+//        }
+    }
+}	

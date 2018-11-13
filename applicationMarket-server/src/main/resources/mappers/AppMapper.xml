@@ -862,7 +862,8 @@ AND a.plateform=#{params.platform}
 	a.introduction AS introduction,
 	a.logo AS logo,
 	a.download_money AS downloadMoney,
-	a.download_count as downloadCount
+	a.download_count as downloadCount,
+	av.package_name as packageName
 FROM
 	t_app a,
 	t_app_version av
@@ -1116,7 +1117,7 @@ INNER JOIN t_app a ON ua.app_id = a.app_id
 FROM
 	t_user_app ua
 INNER JOIN t_app_version av ON ua.version_id = av.app_version_id
-AND is_history_version = 1
+AND is_history_version = 0
 AND ua.user_id = #{params.userId}
 INNER JOIN t_app a ON ua.app_id = a.app_id
 limit #{startNum},#{pageSize}
@@ -1131,7 +1132,7 @@ limit #{startNum},#{pageSize}
 FROM
 	t_user_app ua
 INNER JOIN t_app_version av ON ua.version_id = av.app_version_id
-AND is_history_version = 1
+AND is_history_version = 0
 AND ua.user_id = #{params.userId}
 INNER JOIN t_app a ON ua.app_id = a.app_id
 </select>

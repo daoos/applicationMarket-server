@@ -18,8 +18,19 @@
 	<!-- 任务实体,需要自己创建
 	<bean id="testTaskBean" class="com.techwells.applicationMarket.quartz.TestQuartz" /> -->
  
-	<!--任务方法 -->
+	<!--任务方法，定时清空downloadAdd，24小时执行一次 -->
 	<bean id="resetDownloadCountAddJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- targetObject : 指定任务类 -->
+		<property name="targetObject" ref="quartRun" />
+		<!-- targetMethod  配置定时执行的方法名 -->
+		<property name="targetMethod" value="run24" />
+		<!--是否同时执行，如果为false， 表示等待上一个任务执行完成之后才会执行下一个任务-->
+		<property name="concurrent" value="true" />
+	</bean>
+	
+	<!-- 每秒执行的定时任务 -->
+	<bean id="secondJobDetail"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<!-- targetObject : 指定任务类 -->
 		<property name="targetObject" ref="quartRun" />
@@ -30,13 +41,23 @@
 	</bean>
  
  
-	<!--触发器 -->
+	<!--触发器  每24小时 -->
 	<bean id="testTaskTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<!-- 指定配置的任务 -->
 		<property name="jobDetail" ref="resetDownloadCountAddJobDetail" />
 		<!-- 指定任务执行的时间，使用的是cronExpression -->
-		<property name="cronExpression" value="0/1 * * * * ?" />
+		<property name="cronExpression" value="0 0 0-23 * * ?" />
+	</bean>
+	
+	
+	<!--触发器  每秒 -->
+	<bean id="secondTaskTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 指定配置的任务 -->
+		<property name="jobDetail" ref="secondJobDetail" />
+		<!-- 指定任务执行的时间，使用的是cronExpression -->
+		<property name="cronExpression" value="0/1 * * * * ? *" />
 	</bean>
  
 	<!-- 配置调度工厂，其中可以配置多个触发器任务，使用triggers -->
@@ -45,10 +66,8 @@
 		<property name="triggers">
 			<list>
 				<ref bean="testTaskTrigger" />
+				<ref bean="secondTaskTrigger" />
 			</list>
 		</property>
 	</bean>
-	
-
-
 </beans>

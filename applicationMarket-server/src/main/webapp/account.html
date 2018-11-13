@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>墨客转账</title>
+</head>
+<body>
+	<p>
+    发送方：<input type="text" id="from_address" />  <br>
+</p>
+
+<p>
+    目标地址：<input type="text" id="to_address" />  <br>
+</p>
+
+
+<p>
+    发送方私钥：<input type="text" id="send_key" />  <br>
+</p>
+
+<p>
+    金额：<input type="text" id="amount" />  <br>
+</p>
+
+
+<p>
+    <input type="button" id="search_btn" value="转账" onclick="transfer()" />  <br>
+</p>
+
+
+<h1 id="hash"></h1>
+
+<script type="text/javascript" src="chain3.js"></script>
+<script>
+
+    //转账的方法
+    function transfer(){
+        var chain3 = new Chain3();
+        chain3.setProvider(new chain3.providers.HttpProvider("http://47.92.101.153:8545"));
+
+        var from_address=document.getElementById("from_address").value;  //发送方的地址
+
+        console.log("from_address="+from_address);
+
+        //txCount为中间变量，用来生成nonce.
+        var txCount = chain3.mc.getTransactionCount(from_address);
+
+        console.log("txCount="+txCount);
+
+
+        var amount=document.getElementById("amount").value;  //转账的金额
+
+        console.log("amount="+amount);
+
+        //转换单位为sha
+        var amount_sha = chain3.toSha(amount, 'mc');
+
+        console.log("amount_sha="+amount_sha);
+
+        var to_address=document.getElementById("to_address").value;   //目标地址
+
+        console.log("to_address="+to_address);
+
+
+        var send_key=document.getElementById("send_key").value;
+
+
+        console.log("send_key="+send_key);
+
+        //组装TX包
+        var rawTx = { from:from_address ,
+            nonce: chain3.intToHex(txCount),
+            gasPrice: chain3.intToHex(2000000000),
+            gasLimit: chain3.intToHex(5000000),
+            to: to_address,
+            value: chain3.intToHex(amount_sha),
+            data: '0x00',
+            chainId: chain3.version.network};
+
+        //签署
+        var signedTx = chain3.signTransaction(rawTx, send_key);
+
+        console.log(signedTx);
+        // 发送
+        chain3.mc.sendRawTransaction(signedTx,
+            function(err, hash){
+                if (!err){
+                    console.log('Success')
+                    document.getElementById("hash").innerText=hash;
+                    // return hash; //转账成功，返回值为此次TX的Hash值
+                }else{
+                    alert('Fail');
+                    console.log(err);
+                }
+            })
+    }
+
+
+</script>
+</body>
+</html>
