@@ -170,7 +170,10 @@
 	av.size AS size,
 	av.download_url AS downloadUrl,
 	a.introduction AS introduction,
-	a.logo AS logo,a.download_money as downloadMoney
+	a.logo AS logo,
+	a.download_money as downloadMoney,
+	av.package_name as packageName,
+	a.download_count as downloadCount
 FROM
 	t_app a,
 	t_app_version av,

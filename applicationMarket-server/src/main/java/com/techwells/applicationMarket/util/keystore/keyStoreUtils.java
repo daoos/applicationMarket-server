@@ -9,6 +9,7 @@ import org.aspectj.apache.bcel.generic.InstructionConstants.Clinit;
 import org.junit.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.Hash;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.crypto.WalletUtils;
@@ -131,11 +132,11 @@ public class keyStoreUtils {
         //调用的是kovan测试环境，这里使用的是infer这个客户端
         Web3j web3j = Web3j.build(new HttpService("http://47.92.101.153:8545"));
         //转账人账户地址
-        String ownAddress = "0x0bd3c0b16dc0d210cc8b42345d089ddafac9c55c";
+        String ownAddress = "0x4a1a050e9e657c19e9a2678df202fc72a12f6afb";
         //被转人账户地址
         String toAddress = "0x842979507ca3dbb94392fb076f2555c7ff483d78";
         //转账人私钥
-        Credentials credentials = Credentials.create("733f3188ed94196b4f4c40beed0790debfe005f179728a252f2231a4a05d24e3");
+        Credentials credentials = Credentials.create("bbeeec3ce5279b197efc2a6ae2598df0bb461bff6ee43e702e5c8d1342fdee9a");
 
         //getNonce（这里的Nonce我也不是很明白，大概是交易的笔数吧）
         EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(
@@ -160,9 +161,17 @@ public class keyStoreUtils {
         //签名Transaction，这里要对交易做签名
         byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
         
-        String hexValue = Numeric.toHexString(signedMessage);
+//        
+//      JsonRpcHttpClient client=new JsonRpcHttpClient(new URL("http://47.92.101.153:8545"));
+//		Object[] params=new Object[2];    //封装请求参数
+//		params[0]="0x4a1a050e9e657c19e9a2678df202fc72a12f6afb";  //钱包的地址  
+//		params[1]=Numeric.toHexString(signedMessage);   //获取最新的余额信息
+//		String b=client.invoke("mc_sign", params,String.class);  //返回十六进制的余额
         
-        System.out.println(hexValue.length());
+//        String hexValue = ;
+        System.out.println(Numeric.toHexString(Hash.sha256(signedMessage)));
+//        
+//        System.out.println(hexValue.length());
         
         
         

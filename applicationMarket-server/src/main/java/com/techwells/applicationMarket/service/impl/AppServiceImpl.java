@@ -913,6 +913,7 @@ public class AppServiceImpl implements AppService{
 			userApp=new UserApp();
 			userApp.setUserId(userId);
 			userApp.setAppId(appId);
+			userApp.setCreateDate(new Date());
 			userApp.setVersionId(version.getAppVersionId());  //记录版本Id，用于升级
 			int count=userAppMapper.insertSelective(userApp);
 			//更新失败直接返回null
