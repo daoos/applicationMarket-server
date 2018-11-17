@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.druid.util.StringUtils;
 import com.techwells.applicationMarket.domain.Wallet;
@@ -46,7 +48,7 @@ public class WalletController {
 	 * @return
 	 */
 	@RequestMapping("/wallet/addWallet")
-	public Object addWallet(HttpServletRequest request){
+	public Object addWallet(HttpServletRequest request,@RequestParam(value="keystore",required=false)MultipartFile keystore){
 		ResultInfo resultInfo=new ResultInfo();
 		String userId=request.getParameter("userId");  //用户Id
 		String type=request.getParameter("type");  //钱包类型 1 墨客 2 井通
@@ -79,7 +81,35 @@ public class WalletController {
 		if (!"1".equals(type)||"2".equals(type)) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("请填写正确的钱包类型");
+			return resultInfo;
 		}
+		
+		if (!"1".equals(type)&&keystore==null) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("请上传keystore文件");
+			return resultInfo;
+		}
+		
+		String keystoreUrl=null;
+		//上传keystore文件
+		if (keystore!=null) {
+			String fileName=System.currentTimeMillis()+keystore.getOriginalFilename();  //文件名称
+			String path=ApplicationMarketConstants.UPLOAD_PATH+"keystore/";  //文件的位置
+			keystoreUrl=ApplicationMarketConstants.UPLOAD_URL+"keystore/"+fileName;
+			File targetFile=new File(path,fileName);
+			if (!targetFile.getParentFile().exists()) {
+				targetFile.getParentFile().mkdirs();
+			}
+			
+			try {
+				keystore.transferTo(targetFile);
+			} catch (Exception e) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("上传文件失败");
+				return resultInfo;
+			}
+		}
+		
 		
 		//封装数据
 		Wallet wallet=new Wallet();
@@ -98,6 +128,10 @@ public class WalletController {
 		
 		if (!StringUtils.isEmpty(password)) {
 			wallet.setPassword(password);
+		}
+		
+		if (keystoreUrl!=null) {
+			wallet.setKeystoreUrl(keystoreUrl);
 		}
 		
 		//添加钱包的二维码
@@ -140,7 +174,7 @@ public class WalletController {
 	 * @return
 	 */
 	@RequestMapping("/wallet/reset")
-	public Object reset(HttpServletRequest request){
+	public Object reset(HttpServletRequest request,@RequestParam(value="keystore",required=false)MultipartFile keystore){
 		ResultInfo resultInfo=new ResultInfo();
 		String walletId=request.getParameter("walletId");  //钱包Id
 		String address=request.getParameter("address"); //钱包地址
@@ -190,6 +224,36 @@ public class WalletController {
 			return resultInfo;
 		}
 		
+		if (wallet.getType().equals(1)&&keystore==null) {   //如果是墨客钱包
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("请上传keystore文件");
+			return resultInfo;
+		}
+		
+		
+		String keystoreUrl=null;
+		//上传keystore文件
+		if (keystore!=null) {
+			String fileName=System.currentTimeMillis()+keystore.getOriginalFilename();  //文件名称
+			String path=ApplicationMarketConstants.UPLOAD_PATH+"keystore/";  //文件的位置
+			keystoreUrl=ApplicationMarketConstants.UPLOAD_URL+"keystore/"+fileName;
+			File targetFile=new File(path,fileName);
+			if (!targetFile.getParentFile().exists()) {
+				targetFile.getParentFile().mkdirs();
+			}
+			try {
+				keystore.transferTo(targetFile);
+			} catch (Exception e) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("上传文件失败");
+				return resultInfo;
+			}
+		}
+		
+		if (keystoreUrl!=null) {   //如果上传了keystore文件
+			wallet.setKeystoreUrl(keystoreUrl);
+		}
+		
 		//钱包存在，那么需要修改其中的信息
 		wallet.setAddress(address); //地址
 //		wallet.setType(Integer.parseInt(type));
@@ -213,7 +277,9 @@ public class WalletController {
 		File targetFile = new File(path, qrcodeName); // 目标路径
 		String qrcodeUrl = ApplicationMarketConstants.UPLOAD_URL + "wallet/"
 				+ qrcodeName; // 访问路径
-
+		
+		
+		
 		// 如果文件夹不存在，那么需要自动生成
 		if (!targetFile.getParentFile().exists()) {
 			targetFile.getParentFile().mkdirs();
@@ -385,6 +451,7 @@ public class WalletController {
 		String money=request.getParameter("money");   //金额
 		String walletId=request.getParameter("walletId");  //钱包的Id
 		String pwd=request.getParameter("pwd");  //密码
+		
 		String hash=request.getParameter("hash"); //hash值     墨客转账的hash
 		
 		//参数校验

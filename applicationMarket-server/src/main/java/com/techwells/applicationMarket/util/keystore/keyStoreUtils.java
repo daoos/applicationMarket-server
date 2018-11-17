@@ -9,6 +9,7 @@ import org.aspectj.apache.bcel.generic.InstructionConstants.Clinit;
 import org.junit.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Hash;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
@@ -58,6 +59,8 @@ public class keyStoreUtils {
 	public static String getAddress(String path,String password) throws Exception{
 		Credentials credentials = WalletUtils.loadCredentials(password, path);
 		String address = credentials.getAddress();
+		ECKeyPair ecKeyPair=credentials.getEcKeyPair();
+		System.out.println("0x"+ecKeyPair.getPrivateKey().toString(16));
 		return address;
 	}
 	
@@ -104,7 +107,7 @@ public class keyStoreUtils {
 	
 	@Test
 	public void getAddress() throws Exception{
-		String path="C:\\images\\UTC--2018-10-23T04-00-05.917000000Z--3dfdaaecc881d878b0bd436145e3fb548054b6b0.json";
+		String path="C:\\images\\UTC--2018-11-16T10-33-32.48000000Z--dfc04431e03652a7f5abbf074aa63e7db51baed2.json";
 		String password="12345678";
 		System.out.println(getAddress(path,password));
 	}
@@ -113,8 +116,11 @@ public class keyStoreUtils {
 	@Test
 	public void createWallet() throws Exception{
 		String path="C:\\images";
+		File file=new File(path);
 		String password="12345678";
-		this.creatAccount(path, password);
+//		this.creatAccount(path, password);
+		ECKeyPair ecKeyPair=new ECKeyPair(new BigInteger("1655665"), new BigInteger("1665156151"));
+		WalletUtils.generateWalletFile("12345678", ecKeyPair, file, false);
 	}
 	
 	@Test

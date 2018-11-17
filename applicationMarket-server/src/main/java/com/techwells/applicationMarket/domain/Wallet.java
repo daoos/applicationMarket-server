@@ -20,6 +20,8 @@ public class Wallet {
 
     private String qrcode;
 
+    private String keystoreUrl;
+
     private Integer deleted;
 
     private Integer activated;
@@ -27,9 +29,9 @@ public class Wallet {
     private Date createDate;
 
     private Date updateDate;
-    
-    private List<WalletDetail> details;
 
+    List<WalletDetail> details;
+    
     public List<WalletDetail> getDetails() {
 		return details;
 	}
@@ -100,6 +102,14 @@ public class Wallet {
 
     public void setQrcode(String qrcode) {
         this.qrcode = qrcode == null ? null : qrcode.trim();
+    }
+
+    public String getKeystoreUrl() {
+        return keystoreUrl;
+    }
+
+    public void setKeystoreUrl(String keystoreUrl) {
+        this.keystoreUrl = keystoreUrl == null ? null : keystoreUrl.trim();
     }
 
     public Integer getDeleted() {

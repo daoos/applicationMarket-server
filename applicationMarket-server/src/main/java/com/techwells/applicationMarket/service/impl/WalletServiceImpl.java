@@ -570,7 +570,7 @@ public class WalletServiceImpl implements WalletService{
 		}
 		
 		for (Wallet wallet : wallets) {
-			if (!wallet.getWalletId().equals(wallet)) {
+			if (!wallet.getWalletId().equals(walletId)) {
 				resultInfo.setMessage("切换成功");
 				resultInfo.setResult(wallet);
 				return resultInfo;

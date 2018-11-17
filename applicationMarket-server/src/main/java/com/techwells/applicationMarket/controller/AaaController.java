@@ -60,8 +60,6 @@ public class AaaController {
 		}
 	}
 	
-	
-	
 	/**
 	 * 获取模板详情
 	 * @param request

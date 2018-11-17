@@ -63,18 +63,15 @@ import com.techwells.applicationMarket.util.UploadFileUtils;
  */
 @RestController
 public class AppController {
-
 	@Resource
 	private AppService appService;
 	@Resource
 	private UserService userService;
-	
 	@Resource
 	private AppVersionService versionService;
 	
 	/**
 	 * 添加应用
-	 * 
 	 * @param platform
 	 * @param packageFile
 	 * @param packageName

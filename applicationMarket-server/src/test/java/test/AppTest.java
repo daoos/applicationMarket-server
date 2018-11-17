@@ -13,9 +13,11 @@ import java.util.Map;
 
 import javax.swing.Spring;
 
+import org.apache.bcel.generic.NEW;
 import org.apache.ibatis.javassist.expr.NewArray;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.web3j.crypto.ECKeyPair;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -39,10 +41,9 @@ import com.techwells.applicationMarket.util.PagingTool;
 public class AppTest {
 	@Test
 	public void test1(){
-		ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("spring-mybatis.xml");
-		BannerMapper bannerMapper=context.getBean("bannerMapper",BannerMapper.class);
-		Banner banner=bannerMapper.countBannerByPageAndLocation(1, 1, 1);
-		System.out.println(banner);
+//		System.out.println(new BigInteger("dfc04431e03652a7f5abbf074aa63e7db51baed2",16));
+		System.out.println(new BigInteger("20").toString(16));
+		//
 	}
 	
 	@Test

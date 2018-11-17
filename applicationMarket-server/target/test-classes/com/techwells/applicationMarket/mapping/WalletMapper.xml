@@ -10,14 +10,15 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="balance" property="balance" jdbcType="VARCHAR" />
     <result column="qrcode" property="qrcode" jdbcType="VARCHAR" />
+    <result column="keystore_url" property="keystoreUrl" jdbcType="VARCHAR" />
     <result column="deleted" property="deleted" jdbcType="INTEGER" />
     <result column="activated" property="activated" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    wallet_id, type, user_id, address, secret, password, balance, qrcode, deleted, activated, 
-    create_date, update_date
+    wallet_id, type, user_id, address, secret, password, balance, qrcode, keystore_url, 
+    deleted, activated, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -35,12 +36,14 @@
     </selectKey>
     insert into t_wallet (type, user_id, address, 
       secret, password, balance, 
-      qrcode, deleted, activated, 
-      create_date, update_date)
+      qrcode, keystore_url, deleted, 
+      activated, create_date, update_date
+      )
     values (#{type,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
       #{secret,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{balance,jdbcType=VARCHAR}, 
-      #{qrcode,jdbcType=VARCHAR}, #{deleted,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+      #{qrcode,jdbcType=VARCHAR}, #{keystoreUrl,jdbcType=VARCHAR}, #{deleted,jdbcType=INTEGER}, 
+      #{activated,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.Wallet" >
     <selectKey resultType="java.lang.Integer" keyProperty="walletId" order="AFTER" >
@@ -68,6 +71,9 @@
       </if>
       <if test="qrcode != null" >
         qrcode,
+      </if>
+      <if test="keystoreUrl != null" >
+        keystore_url,
       </if>
       <if test="deleted != null" >
         deleted,
@@ -103,6 +109,9 @@
       </if>
       <if test="qrcode != null" >
         #{qrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="keystoreUrl != null" >
+        #{keystoreUrl,jdbcType=VARCHAR},
       </if>
       <if test="deleted != null" >
         #{deleted,jdbcType=INTEGER},
@@ -142,6 +151,9 @@
       <if test="qrcode != null" >
         qrcode = #{qrcode,jdbcType=VARCHAR},
       </if>
+      <if test="keystoreUrl != null" >
+        keystore_url = #{keystoreUrl,jdbcType=VARCHAR},
+      </if>
       <if test="deleted != null" >
         deleted = #{deleted,jdbcType=INTEGER},
       </if>
@@ -166,6 +178,7 @@
       password = #{password,jdbcType=VARCHAR},
       balance = #{balance,jdbcType=VARCHAR},
       qrcode = #{qrcode,jdbcType=VARCHAR},
+      keystore_url = #{keystoreUrl,jdbcType=VARCHAR},
       deleted = #{deleted,jdbcType=INTEGER},
       activated = #{activated,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
