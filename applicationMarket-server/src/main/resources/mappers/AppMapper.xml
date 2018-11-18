@@ -1033,7 +1033,8 @@ AND u.deleted = 1
 	a.download_count AS downloadCount,
 	a.introduction AS introduction,
 	av.download_url as downloadUrl,
-	av.package_name as packageName
+	av.package_name as packageName,
+	av.version_number as versionNum
 FROM
 	t_app a
 INNER JOIN t_app_version av ON av.app_id = a.app_id

@@ -303,7 +303,8 @@ AND av.is_history_version = 0
 	a.logo as logo,
 	ar.recommend_type_id as recommendTypeId,
 	av.download_url as downloadUrl,
-	av.package_name as packageName
+	av.package_name as packageName,
+	av.version_number as versionNum
 FROM
 	t_app_recommend_type ar
 INNER JOIN t_app a ON ar.recommend_type_id = a.recommend_type_id and ar.recommend_type_id=#{typeId}

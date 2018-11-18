@@ -410,9 +410,9 @@ public class TaskServiceImpl implements TaskService{
 		
 		String content=null;
 		if (task.getActivated().equals(1)) {  //领取墨客币
-			content=task.getTaskName()+"领取墨客币+"+task.getRewardMoney();
+			content=task.getTaskName()+"领取墨客币";
 		}else {  //井通
-			content=task.getTaskName()+"领取井通+"+task.getRewardMoney();
+			content=task.getTaskName()+"领取井通";
 		}
 		
 		userTask.setContent(content);

@@ -60,7 +60,6 @@ public class TaskController {
 		String activated=request.getParameter("activated");  //奖励的类型  1 墨客币 2 井通
 		String publishId=request.getParameter("publishId");  //发布人Id
 		
-		
 		//校验参数
 		if (StringUtils.isEmpty(publishId)) {
 			resultInfo.setCode("-1");
@@ -613,21 +612,17 @@ public class TaskController {
 		ResultInfo resultInfo=new ResultInfo();
 		String userId=request.getParameter("userId");   //用户Id
 		String taskId=request.getParameter("taskId");   //任务Id
-		
-		
 		//校验
 		if (StringUtils.isEmpty(userId)) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("用户Id不能为空");
 			return resultInfo;
 		}
-		
 		if (StringUtils.isEmpty(taskId)) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("任务Id不能为空");
 			return resultInfo;
 		}
-		
 		//调用service的方法
 		try {
 			Object object=taskService.finishTask(Integer.parseInt(userId),Integer.parseInt(taskId));
@@ -639,5 +634,4 @@ public class TaskController {
 			return resultInfo;
 		}
 	}
-	
 }
