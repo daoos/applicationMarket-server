@@ -31,4 +31,9 @@ public interface QuartzService {
 	 */
 	void setBlock();
 	
+	/**
+	 * 获取moac交易的信息
+	 */
+	void getMoacTrasactionDetail();
+	
 }

@@ -22,4 +22,7 @@ public interface SystemConfigService {
 	 * @throws Exception
 	 */
 	Object getConfigInfo(Integer configId)throws Exception;
+	
+	
+	SystemConfig getSystemConfigById(Integer configId)throws Exception;
 }

@@ -135,6 +135,14 @@ public interface WalletService {
 	 * @throws Exception
 	 */
 	Object getAddress(Integer userId,Integer walletType)throws Exception;
+
+	/**
+	 * 根据用户Id获取moac钱包地址和管理员地址秘钥
+	 * @param userId
+	 * @return
+	 * @throws Exception 
+	 */
+	Object getWalletInfo(Integer userId) throws Exception;
 	
 	
 	

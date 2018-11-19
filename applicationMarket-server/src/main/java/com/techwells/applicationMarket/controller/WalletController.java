@@ -78,13 +78,13 @@ public class WalletController {
 		}
 		
 		
-		if (!"1".equals(type)||"2".equals(type)) {
+		if (!type.equals("1")&&!type.equals("2")) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("请填写正确的钱包类型");
 			return resultInfo;
 		}
 		
-		if (!"1".equals(type)&&keystore==null) {
+		if ("1".equals(type)&&keystore==null) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("请上传keystore文件");
 			return resultInfo;
@@ -729,6 +729,36 @@ public class WalletController {
 			return resultInfo;
 		}
 	}
+	
+	
+	/**
+	 * 根据用户Id返回moac钱包地址和管理员钱包的地址和秘钥
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/wallet/getWalletInfo")
+	public Object getWalletInfo(HttpServletRequest request){
+		ResultInfo resultInfo=new ResultInfo();
+		String userId=request.getParameter("userId");  //用户
+		if (StringUtils.isEmpty(userId)) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("用户Id不能为空");
+			return resultInfo;
+		}
+		
+		try {
+			Object object=walletService.getWalletInfo(Integer.parseInt(userId));
+			return object;
+		} catch (Exception e) {
+			logger.error("获取moac钱包异常",e);
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("异常");
+			return resultInfo;
+		}
+	}
+	
+	
+	
 	
 	
 	

@@ -16,7 +16,7 @@ public class TaskAppVersionVos {
 	private Integer taskId; // 任务Id
 	private String link;   //链接
 	private Double rewardMoney;  //奖励的钱
-	private Integer activated;  //奖励钱的类型
+	private Integer activated;  //奖励钱的类型  1墨客 2 井通
 	private String introduction;   //任务简介
     private Integer taskTypeId;  //任务类型Id
     private String taskName;  //任务名称

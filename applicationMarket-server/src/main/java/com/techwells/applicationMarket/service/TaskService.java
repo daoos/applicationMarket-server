@@ -47,10 +47,12 @@ public interface TaskService {
 	/**
 	 * 领取任务奖励
 	 * @param taskDetailId 任务明细Id
+	 * @param hash 转账的hash值
 	 * @return
 	 * @throws Exception
+	 * @throws Throwable 
 	 */
-	Object receiveReward(Integer taskDetailId)throws Exception;
+	Object receiveReward(Integer taskDetailId,String hash)throws Exception, Throwable;
 	
 	/**
 	 * 立即完成任务

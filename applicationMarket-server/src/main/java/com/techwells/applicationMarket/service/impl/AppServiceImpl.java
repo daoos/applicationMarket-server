@@ -833,6 +833,7 @@ public class AppServiceImpl implements AppService{
 					taskApp.setActivated(task.getActivated());   //奖励的类型
 					taskApp.setTaskTypeId(task.getTaskTypeId());  //任务类型的Id
 					taskApp.setTaskName(task.getTaskName());
+					taskApp.setTaskId(task.getTaskId());
 				}
 			}else {   //如果是其他类型的，直接返回信息即可
 				taskApp=new TaskAppVersionVos();
@@ -842,6 +843,7 @@ public class AppServiceImpl implements AppService{
 				taskApp.setLink(task.getLink());  //链接
 				taskApp.setTaskTypeId(task.getTaskTypeId());  //任务类型的Id
 				taskApp.setTaskName(task.getTaskName());
+				taskApp.setTaskId(task.getTaskId());
 			}
 		}
 		

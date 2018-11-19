@@ -440,6 +440,7 @@ public class TaskController {
 	
 	/**
 	 * 领取任务奖励
+	 * 1、井通领取奖励是后台转账，moac是前台进行转账
 	 * @param request
 	 * @return
 	 */
@@ -447,7 +448,9 @@ public class TaskController {
 	public Object receiveReward(HttpServletRequest request){
 		ResultInfo resultInfo=new ResultInfo();
 		
-		String taskDetailId=request.getParameter("taskDetailId");
+		String taskDetailId=request.getParameter("taskDetailId");  //已完成任务的Id
+		
+		String hash=request.getParameter("hash");  //moac转账的hash值,只有moac转账才会传
 		
 		if (StringUtils.isEmpty(taskDetailId)) {
 			resultInfo.setCode("-1");
@@ -456,9 +459,15 @@ public class TaskController {
 		}
 		
 		try {
-			Object object=taskService.receiveReward(Integer.parseInt(taskDetailId));
+			Object object=null;
+			if (!StringUtils.isEmpty(hash)) {  //如果hash不是空的，那么就是进行了墨客发放奖励
+				object=taskService.receiveReward(Integer.parseInt(taskDetailId),hash);
+			}else {
+				object=taskService.receiveReward(Integer.parseInt(taskDetailId),null);
+			}
 			return object;
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			e.printStackTrace();
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("异常");
 			return resultInfo;

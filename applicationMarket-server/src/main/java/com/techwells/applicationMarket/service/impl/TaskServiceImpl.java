@@ -32,9 +32,12 @@ import com.techwells.applicationMarket.domain.rs.AppVersionImageVos;
 import com.techwells.applicationMarket.domain.rs.TaskAdminVos;
 import com.techwells.applicationMarket.domain.rs.TaskAppVersionVos;
 import com.techwells.applicationMarket.service.TaskService;
+import com.techwells.applicationMarket.util.Base64Util;
 import com.techwells.applicationMarket.util.DateUtil;
 import com.techwells.applicationMarket.util.PagingTool;
 import com.techwells.applicationMarket.util.ResultInfo;
+import com.techwells.applicationMarket.util.moac.MoacUtils;
+import com.techwells.applicationMarket.util.moac.TransactionDetail;
 import com.techwells.applicationMarket.util.swtc.Amount;
 import com.techwells.applicationMarket.util.swtc.PayNeedData;
 import com.techwells.applicationMarket.util.swtc.PayObject;
@@ -158,12 +161,13 @@ public class TaskServiceImpl implements TaskService{
 		
 		//遍历获取详细信息
 		for (Task task : tasks) {
-			//判断该应用是否已经完成或者达到完成的次数了
-//			UserTask userTask=userTaskMapper.selectUserTask((Integer)pagingTool.getParams().get("userId"),task.getTaskId());   //根据用户信息查找
+			//根据用户Id和任务Id获取用户所有完成的任务
+			List<UserTask> userTaskList=userTaskMapper.selectUserTasksListByUserIdAndTaskId((Integer)pagingTool.getParams().get("userId"),task.getTaskId());   //根据用户信息查找
 //			
 //			//如果userTask存在，并且已经达到了允许下载的次数了，那么就不能显示在任务中给用户
-//			if (userTask!=null&&userTask.getTotal()>=task.getAllowNumber()) {
-//			}
+			if (userTaskList!=null&&userTaskList.size()>=task.getAllowNumber()) {
+				continue;   //继续下一次的循环，不返回
+			}
 			
 			TaskAppVersionVos taskApp=null;
 			//如果是下载安装类，需要联合查询应用信息
@@ -184,6 +188,7 @@ public class TaskServiceImpl implements TaskService{
 					taskApp.setTaskTypeId(task.getTaskTypeId());  //任务类型的Id
 					taskApp.setTaskName(task.getTaskName());
 					taskApp.setPackageName(appVersion.getPackageName());
+					taskApp.setDownloadUrl(appVersion.getDownloadUrl());
 				}
 			}else {   //如果是其他类型的，直接返回信息即可
 				taskApp=new TaskAppVersionVos();
@@ -216,9 +221,10 @@ public class TaskServiceImpl implements TaskService{
 	
 	/**
 	 * 领取任务奖励
+	 * @throws Throwable 
 	 */
 	@Override
-	public Object receiveReward(Integer taskDetailId) throws Exception {
+	public Object receiveReward(Integer taskDetailId,String hash) throws Throwable {
 		ResultInfo resultInfo=new ResultInfo();
 		
 		//根据id查询信息
@@ -250,22 +256,58 @@ public class TaskServiceImpl implements TaskService{
 		
 		//未发放，存在，那么就需要进行转账了
 		
-		if (userTask.getActivated().equals(1)) {  //如果是MOAC
-			//开发商只有配置了账号才能进行转账
-			if (config.getSwtcAddress()==null||config.getSwtcSecret()==null) {
-				resultInfo.setCode("-1");
-				resultInfo.setMessage("开发商没有配置账号，暂时不能领取奖励");
-				return resultInfo;
-			}
+		if (userTask.getActivated().equals(1)) {  //如果是MOAC，前台进行转账，这里改变下状态即可
+//			Thread.sleep(4000);
 			
-			//根据用户Id和对应的钱包类型获取用户的钱包信息,2表示井通钱包 1 表示MOAC钱包
-			Wallet wallet=walletMapper.selectWallet(userTask.getUserId(),1);
+			//开发商只有配置了账号才能进行转账
+//			if (config.getSwtcAddress()==null||config.getSwtcSecret()==null) {
+//				resultInfo.setCode("-1");
+//				resultInfo.setMessage("开发商没有配置账号，暂时不能领取奖励");
+//				return resultInfo;
+//			}
+//			
+//			//根据用户Id和对应的钱包类型获取用户的钱包信息,2表示井通钱包 1 表示MOAC钱包
+//			Wallet wallet=walletMapper.selectWallet(userTask.getUserId(),1);
+//			
+//			if (wallet==null) {
+//				resultInfo.setCode("999999");   //特殊的返回码，前台需要定制
+//				resultInfo.setMessage("您还没有导入钱包账户，请导入井通钱包账户");
+//				return resultInfo;
+//			}
+			
+			
+			//根据用户Id获取moac钱包
+			Wallet wallet=walletMapper.selectWallet(userTask.getUserId(), 1);
 			
 			if (wallet==null) {
 				resultInfo.setCode("999999");   //特殊的返回码，前台需要定制
 				resultInfo.setMessage("您还没有导入钱包账户，请导入井通钱包账户");
 				return resultInfo;
 			}
+			
+			//由于交易延迟的问题，因此先保留交易的hash
+			WalletDetail detail=new WalletDetail();
+			//墨客转账是在前台完成的，这里只需要用hash值查询转账的信息即可
+//			TransactionDetail transactionDetail=MoacUtils.getTransactionDetail(hash);
+//			detail.setNumber(System.currentTimeMillis()+"");
+//			detail.setCreateDate(new Date());  //设置创建日期
+//			detail.setBlock(transactionDetail.getBlockNumber());   //设置区块信息
+//			detail.setFromAddress(transactionDetail.getFrom());  //转账方的钱包地址
+//			detail.setToAddress(transactionDetail.getTo());
+//			detail.setFee((Double)(Long.parseLong(transactionDetail.getGas())/1000000000000000000.0*Long.parseLong(transactionDetail.getGasPrice())));   //旷工费用
+//			detail.setRemark("任务奖励发放");   //设置备注为转账
+//			Date trsdate=new Date();   //交易日期
+//			detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
+			detail.setActivated(userTask.getActivated());  //设置钱包的类型
+//			detail.setMoney("-"+transactionDetail.getValue());
+			detail.setWalletId(wallet.getWalletId());
+			detail.setHash(hash);
+			
+			int count=detailMapper.insertSelective(detail);
+			if (count==0) {
+				throw new RuntimeException();
+			}
+			
 		}else if(userTask.getActivated().equals(2)){  //如果是井通
 			
 			//开发商只有配置了账号才能进行转账
@@ -289,7 +331,7 @@ public class TaskServiceImpl implements TaskService{
 			PayNeedData data=new PayNeedData();
 			String orderNum=System.currentTimeMillis()+"";
 			data.setClient_id(orderNum);  //订单号
-			data.setSecret(config.getSwtcSecret());  //秘钥
+			data.setSecret(Base64Util.Decoder(config.getSwtcSecret()));  //秘钥
 			
 			PayObject payObject=new PayObject();
 			payObject.setDestination(wallet.getAddress());   //目标账号
@@ -320,25 +362,27 @@ public class TaskServiceImpl implements TaskService{
 				return resultInfo;
 			}
 			
-			String hash=(String) map.get("hash");  //获取hash值，用于查询交易信息
+			String swtHash=(String) map.get("hash");  //获取hash值，用于查询交易信息
 			
 			//添加一条钱包明细
 			//封装信息
 			WalletDetail detail=new WalletDetail();
-			detail.setHash(hash);  //hash的值
-			detail.setNumber(orderNum);
+			detail.setHash(swtHash);  //hash的值
+			detail.setNumber(orderNum);   //交易号
 			detail.setCreateDate(new Date());  //设置创建日期
 			detail.setBlock(null);   //设置区块信息
-			detail.setFromAddress(wallet.getAddress());  //转账方的钱包地址
+			detail.setFromAddress(config.getSwtcAddress());  //转账方的钱包地址
+			detail.setToAddress(wallet.getAddress());
 			detail.setFee((Double)map.get("fee"));   //旷工费用
 			detail.setRemark("任务奖励发放");   //设置备注为转账
 			Date trsdate=new Date();   //交易日期
 			detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
 			detail.setUrl(SwtcUtils.HTTP+"v2/transactions/"+hash);   //设置公开查账的地址
 			detail.setActivated(wallet.getType());  //设置钱包的类型
-			detail.setMoney("-"+detail.getMoney());
+			detail.setMoney("-"+userTask.getMoney());
+			detail.setWalletId(wallet.getWalletId());
 			
-			int count=detailMapper.updateByPrimaryKeySelective(detail);
+			int count=detailMapper.insertSelective(detail);
 			if (count==0) {
 				throw new RuntimeException();
 			}

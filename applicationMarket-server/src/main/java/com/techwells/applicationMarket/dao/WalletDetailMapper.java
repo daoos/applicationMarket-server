@@ -77,6 +77,13 @@ public interface WalletDetailMapper {
     int countTotalWalletDetailsBack(PagingTool pagingTool);
     
     
+    /**
+     * 查找编号为空的明细
+     * @return
+     */
+    List<WalletDetail> selectWalletDetailByNumber();
+    
+    
     
     
     

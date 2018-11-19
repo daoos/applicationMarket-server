@@ -225,7 +225,7 @@
  	List<WalletDetail> selectListByBlock();
   -->
  <select id="selectListByBlock" resultMap="BaseResultMap">
- 	select * from t_wallt_detail where block=""
+ 	select * from t_wallt_detail where block="" and activated=2
  </select>
  
  
@@ -349,5 +349,24 @@ on wd.wallet_id=w.wallet_id
 	</if>
 </where>
 </select>
+
+
+<!-- 
+ 	selectWalletDetailByNumber
+  -->
+ <select id="selectWalletDetailByNumber" resultMap="BaseResultMap">
+ 	SELECT
+	*
+FROM
+	t_wallt_detail
+WHERE
+	number is NULL
+AND activated = 1
+ </select>
+
+
+
+
+
 
 </mapper>

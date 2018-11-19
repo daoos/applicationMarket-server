@@ -1,9 +1,11 @@
 package com.techwells.applicationMarket.service.impl;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.interfaces.RSAKey;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +48,9 @@ public class WalletServiceImpl implements WalletService{
 	
 	@Resource
 	private WalletDetailMapper detailMapper;
+	
+	@Resource
+	private SystemConfigMapper systemConfigMapper;
 	
 	@Resource
 	private SystemConfigMapper configMapper;
@@ -254,7 +259,6 @@ public class WalletServiceImpl implements WalletService{
 			// 查询成功，设置信息即可
 			wallet.setBalance(balanceSwt);
 		}
-		
 		
 		//修改钱包信息
 		int count=walletMapper.updateByPrimaryKeySelective(wallet);
@@ -614,6 +618,31 @@ public class WalletServiceImpl implements WalletService{
 		
 		resultInfo.setMessage("获取成功");
 		resultInfo.setResult(wallet);
+		return resultInfo;
+	}
+
+	@Override
+	public Object getWalletInfo(Integer userId) throws Exception {
+		ResultInfo resultInfo=new ResultInfo();
+		Wallet wallet=walletMapper.selectWallet(userId,1);
+		
+		if (wallet==null) {
+			resultInfo.setCode("999999");
+			resultInfo.setMessage("请先导入钱包");
+			return resultInfo;
+		}
+		
+		//获取管理员的秘钥和地址
+		SystemConfig config=systemConfigMapper.selectByPrimaryKey(1);
+		config.setMoacSecret(Base64Util.Decoder(config.getMoacSecret()));
+		config.setSwtcSecret("***********************************");
+	
+		Map<String,Object> map=new HashMap<String, Object>();
+		
+		map.put("wallet", wallet);
+		map.put("config",config);
+		resultInfo.setMessage("获取成功");
+		resultInfo.setResult(map);
 		return resultInfo;
 	}
 	

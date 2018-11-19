@@ -114,10 +114,10 @@ public class SwtcUtils {
 //		data.setSource_address("jNtuYEfWLVB2PfSjhvSur5Asq1yTsXkBge");
 		
 		Amount amount=new Amount();
-		amount.setValue("0.1");
+		amount.setValue("1000");
 		
 		PayObject payObject=new PayObject();
-		payObject.setDestination("jUCtRoLPKp9ALFzcxri7ex6R9WiMwmrmT2");
+		payObject.setDestination("jp2uU9VMjeYSNBp3ggJg2Zxw59twBrvAF2");
 		payObject.setSource("jNtuYEfWLVB2PfSjhvSur5Asq1yTsXkBge");
 		payObject.setAmount(amount);
 		

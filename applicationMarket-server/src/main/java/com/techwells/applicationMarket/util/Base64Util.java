@@ -162,7 +162,11 @@ public class Base64Util {
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		
+		System.out.println(encoder("sh1UQoXsKvH1t7ucAqu3PNmBFgmWy"));
+		
+		
 	}
 
 	

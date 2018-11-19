@@ -46,6 +46,11 @@ public class SystemConfigServiceImpl implements SystemConfigService {
 		return resultInfo;
 		
 	}
+
+	@Override
+	public SystemConfig getSystemConfigById(Integer configId) throws Exception {
+		return systemConfigMapper.selectByPrimaryKey(configId);
+	}
 	
 	
 	
