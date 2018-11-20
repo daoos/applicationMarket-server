@@ -309,48 +309,48 @@ public class UserServiceImpl implements UserService {
 		pagingTool.setParams(params);
 		
 		// 分页获取的任务信息，有效的、已开始的，未结束的， ----当前用户未完成的或者未达到允许完成次数的，未完待续-----
-		List<Task> tasks = taskMapper.selectTaskDetailList(pagingTool);
-
-		List<TaskAppVersionVos> taskAppVersionVos = new ArrayList<TaskAppVersionVos>(); // 封装任务信息
+//		List<Task> tasks = taskMapper.selectTaskDetailList(pagingTool);
+//
+//		List<TaskAppVersionVos> taskAppVersionVos = new ArrayList<TaskAppVersionVos>(); // 封装任务信息
 
 		// 遍历获取详细信息
-		for (Task task : tasks) {
-			TaskAppVersionVos taskApp = null;
-			// 如果是下载安装类，需要联合查询应用信息
-			if (task.getTaskTypeId().equals(1)) {
-				// 查询应用的信息
-				AppVersionImageVos appVersion = appMapper
-						.selectAppVersionImageVos(task.getAppId(),
-								(Integer) pagingTool.getParams()
-										.get("platform"));
-				if (appVersion != null) {
-					taskApp = new TaskAppVersionVos();
-					taskApp.setAppId(task.getAppId()); // 应用Id
-					taskApp.setTaskId(task.getTaskId());
-					taskApp.setAppName(appVersion.getAppName()); // 应用名称
-					taskApp.setLogo(appVersion.getLogo()); // 图标
-					taskApp.setVersionNum(appVersion.getVersionNum()); // 版本号
-					taskApp.setSize(appVersion.getSize()); // 应用大小
-					taskApp.setIntroduction(task.getIntroduction());// 简介
-					taskApp.setRewardMoney(task.getRewardMoney()); // 奖励的钱
-					taskApp.setActivated(task.getActivated()); // 奖励的类型
-					taskApp.setTaskTypeId(task.getTaskTypeId()); // 任务类型的Id
-					taskApp.setTaskName(task.getTaskName());
-				}
-			} else { // 如果是其他类型的，直接返回信息即可
-				taskApp = new TaskAppVersionVos();
-				taskApp.setIntroduction(task.getIntroduction());// 简介
-				taskApp.setRewardMoney(task.getRewardMoney()); // 奖励的钱
-				taskApp.setActivated(task.getActivated()); // 奖励的类型
-				taskApp.setLink(task.getLink()); // 链接
-				taskApp.setTaskTypeId(task.getTaskTypeId()); // 任务类型的Id
-				taskApp.setTaskName(task.getTaskName());
-				taskApp.setTaskId(task.getTaskId());
-			}
-			if (taskApp != null) {
-				taskAppVersionVos.add(taskApp); // 添加到集合中
-			}
-		}
+//		for (Task task : tasks) {
+//			TaskAppVersionVos taskApp = null;
+//			// 如果是下载安装类，需要联合查询应用信息
+//			if (task.getTaskTypeId().equals(1)) {
+//				// 查询应用的信息
+//				AppVersionImageVos appVersion = appMapper
+//						.selectAppVersionImageVos(task.getAppId(),
+//								(Integer) pagingTool.getParams()
+//										.get("platform"));
+//				if (appVersion != null) {
+//					taskApp = new TaskAppVersionVos();
+//					taskApp.setAppId(task.getAppId()); // 应用Id
+//					taskApp.setTaskId(task.getTaskId());
+//					taskApp.setAppName(appVersion.getAppName()); // 应用名称
+//					taskApp.setLogo(appVersion.getLogo()); // 图标
+//					taskApp.setVersionNum(appVersion.getVersionNum()); // 版本号
+//					taskApp.setSize(appVersion.getSize()); // 应用大小
+//					taskApp.setIntroduction(task.getIntroduction());// 简介
+//					taskApp.setRewardMoney(task.getRewardMoney()); // 奖励的钱
+//					taskApp.setActivated(task.getActivated()); // 奖励的类型
+//					taskApp.setTaskTypeId(task.getTaskTypeId()); // 任务类型的Id
+//					taskApp.setTaskName(task.getTaskName());
+//				}
+//			} else { // 如果是其他类型的，直接返回信息即可
+//				taskApp = new TaskAppVersionVos();
+//				taskApp.setIntroduction(task.getIntroduction());// 简介
+//				taskApp.setRewardMoney(task.getRewardMoney()); // 奖励的钱
+//				taskApp.setActivated(task.getActivated()); // 奖励的类型
+//				taskApp.setLink(task.getLink()); // 链接
+//				taskApp.setTaskTypeId(task.getTaskTypeId()); // 任务类型的Id
+//				taskApp.setTaskName(task.getTaskName());
+//				taskApp.setTaskId(task.getTaskId());
+//			}
+//			if (taskApp != null) {
+//				taskAppVersionVos.add(taskApp); // 添加到集合中
+//			}
+//		}
 		
 		
 		//获取一个钱包
@@ -359,7 +359,7 @@ public class UserServiceImpl implements UserService {
 		//封装返回的数据
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("wallet", wallets.size()!=0?wallets.get(0):null);  //钱包信息
-		map.put("tasks",taskAppVersionVos);  //任务清单
+//		map.put("tasks",taskAppVersionVos);  //任务清单
 		
 		//获取安装记录，（安卓）
 		if (platform.equals(1)) {  //如果是安卓，那么需要查询安装记录

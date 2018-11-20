@@ -1,5 +1,6 @@
 package com.techwells.applicationMarket.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -54,8 +55,14 @@ public class FeedBackServiceImpl implements FeedBackService {
 	@Override
 	public Object getFeedBackList(PagingTool pagingTool) throws Exception {
 		ResultInfo resultInfo=new ResultInfo();
-		List<FeedBackImageUserProvinceVos> feedBackImageUserProvinceVos=feedBackMapper.selectFeedBackImageUserProvinceVos(pagingTool);
 		int count=feedBackMapper.countTotal(pagingTool);
+		
+		if (count==0) {
+			resultInfo.setMessage("获取成功");
+			resultInfo.setResult(new ArrayList<FeedBackImageUserProvinceVos>());
+			resultInfo.setTotal(count);
+		}
+		List<FeedBackImageUserProvinceVos> feedBackImageUserProvinceVos=feedBackMapper.selectFeedBackImageUserProvinceVos(pagingTool);
 		resultInfo.setMessage("获取成功");
 		resultInfo.setResult(feedBackImageUserProvinceVos);
 		resultInfo.setTotal(count);

@@ -23,7 +23,6 @@
 	<context:property-placeholder location="classpath:jdbc.properties"/>
 	
 	
-	
 	<!-- 自动扫描 -->
 	<context:component-scan base-package="com.techwells.applicationMarket.service" />
 

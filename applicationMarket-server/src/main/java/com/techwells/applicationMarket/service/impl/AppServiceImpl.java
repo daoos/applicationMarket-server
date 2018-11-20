@@ -342,8 +342,11 @@ public class AppServiceImpl implements AppService{
 		List<AppAndVersionVos> appVersionVos=appMapper.selectHistoryList(appId);
 		
 		resultInfo.setTotal(appVersionVos.size());
+		
 		resultInfo.setResult(appVersionVos);
+		
 		resultInfo.setMessage("获取成功");
+		
 		return resultInfo;
 	}
 

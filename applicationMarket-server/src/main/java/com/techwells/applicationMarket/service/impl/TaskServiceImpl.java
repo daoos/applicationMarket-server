@@ -199,6 +199,7 @@ public class TaskServiceImpl implements TaskService{
 				taskApp.setTaskTypeId(task.getTaskTypeId());  //任务类型的Id
 				taskApp.setTaskName(task.getTaskName());
 				taskApp.setTaskId(task.getTaskId());
+				taskApp.setLogo("http://www.emoonbow.com/applicationMarket-upload/appType/dpplog.png");  //其他类型的都是使用默认的图片
 			}
 			if (taskApp!=null) {
 				taskAppVersionVos.add(taskApp);  //添加到集合中

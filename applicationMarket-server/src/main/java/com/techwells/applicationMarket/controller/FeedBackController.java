@@ -74,6 +74,7 @@ public class FeedBackController {
 		
 		FeedBack feedBack=new FeedBack();
 		feedBack.setUserId(Integer.parseInt(userId));
+		feedBack.setCreateDate(new Date());
 		
 		if (!StringUtils.isEmpty(content)) {
 			feedBack.setContent(content);

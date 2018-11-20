@@ -26,8 +26,14 @@ public class AppAndVersionVos {
 	private Integer isUninstall;  //是否卸载  1 已卸载 0 未卸载
 	private String packageName;  //安装包的名称
 	private Date installDate;  //安装时间
+	private Date publishDate;  //应用发布日期
 	
-	
+	public Date getPublishDate() {
+		return publishDate;
+	}
+	public void setPublishDate(Date publishDate) {
+		this.publishDate = publishDate;
+	}
 	public Date getInstallDate() {
 		return installDate;
 	}

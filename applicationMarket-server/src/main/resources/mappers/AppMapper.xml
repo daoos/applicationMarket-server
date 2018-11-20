@@ -679,7 +679,8 @@ AND a.ground_status = 1 and now()>=publish_date and a.name like "%"#{appName}"%"
 	a.app_id as appId,av.app_version_id as versionId,
 	av.size as size,av.download_url as downloadUrl,
 	a.introduction as introduction,a.logo as logo,a.download_money as downloadMoney,
-	av.package_name as packageName
+	av.package_name as packageName,
+	av.create_date as publishDate
 FROM
 	t_app a,
 	t_app_version av
@@ -687,6 +688,7 @@ WHERE
 	a.app_id = av.app_id
 AND av.is_history_version = 1
 AND a.ground_status = 1 and now()>=publish_date
+AND a.app_id=#{appId}
 </select>
 
 
