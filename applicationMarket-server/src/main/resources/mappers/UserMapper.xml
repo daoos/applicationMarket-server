@@ -5,6 +5,7 @@
     <id column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="email_login" property="emailLogin" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="user_icon" property="userIcon" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="INTEGER" />
@@ -34,7 +35,7 @@
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, user_name, password, mobile, user_icon, gender, address, province_code, 
+    user_id, user_name, password, email_login, mobile, user_icon, gender, address, province_code, 
     is_developer, real_name, role_id, activated, deleted, last_login_time, enterprise_name, 
     publisher_name, id_card_image, business_license, business_license_number, registed_address, 
     contact_name, contact_mobile, contact_address, email, qq, web_address, examin_status, 
@@ -54,26 +55,28 @@
     <selectKey resultType="java.lang.Integer" keyProperty="userId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_user (user_name, password, mobile, 
-      user_icon, gender, address, 
-      province_code, is_developer, real_name, 
-      role_id, activated, deleted, 
-      last_login_time, enterprise_name, publisher_name, 
-      id_card_image, business_license, business_license_number, 
-      registed_address, contact_name, contact_mobile, 
-      contact_address, email, qq, 
-      web_address, examin_status, auth_date, 
-      create_date, update_date)
-    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-      #{userIcon,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
-      #{provinceCode,jdbcType=VARCHAR}, #{isDeveloper,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, 
-      #{roleId,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, 
-      #{lastLoginTime,jdbcType=TIMESTAMP}, #{enterpriseName,jdbcType=VARCHAR}, #{publisherName,jdbcType=VARCHAR}, 
-      #{idCardImage,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR}, #{businessLicenseNumber,jdbcType=VARCHAR}, 
-      #{registedAddress,jdbcType=VARCHAR}, #{contactName,jdbcType=VARCHAR}, #{contactMobile,jdbcType=VARCHAR}, 
-      #{contactAddress,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
-      #{webAddress,jdbcType=VARCHAR}, #{examinStatus,jdbcType=INTEGER}, #{authDate,jdbcType=TIMESTAMP}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+    insert into t_user (user_name, password, email_login, 
+      mobile, user_icon, gender, 
+      address, province_code, is_developer, 
+      real_name, role_id, activated, 
+      deleted, last_login_time, enterprise_name, 
+      publisher_name, id_card_image, business_license, 
+      business_license_number, registed_address, 
+      contact_name, contact_mobile, contact_address, 
+      email, qq, web_address, 
+      examin_status, auth_date, create_date, 
+      update_date)
+    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{emailLogin,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{userIcon,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, #{isDeveloper,jdbcType=INTEGER}, 
+      #{realName,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{activated,jdbcType=INTEGER}, 
+      #{deleted,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{enterpriseName,jdbcType=VARCHAR}, 
+      #{publisherName,jdbcType=VARCHAR}, #{idCardImage,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR}, 
+      #{businessLicenseNumber,jdbcType=VARCHAR}, #{registedAddress,jdbcType=VARCHAR}, 
+      #{contactName,jdbcType=VARCHAR}, #{contactMobile,jdbcType=VARCHAR}, #{contactAddress,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{webAddress,jdbcType=VARCHAR}, 
+      #{examinStatus,jdbcType=INTEGER}, #{authDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.User" >
     <selectKey resultType="java.lang.Integer" keyProperty="userId" order="AFTER" >
@@ -86,6 +89,9 @@
       </if>
       <if test="password != null" >
         password,
+      </if>
+      <if test="emailLogin != null" >
+        email_login,
       </if>
       <if test="mobile != null" >
         mobile,
@@ -175,6 +181,9 @@
       </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="emailLogin != null" >
+        #{emailLogin,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null" >
         #{mobile,jdbcType=VARCHAR},
@@ -268,6 +277,9 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="emailLogin != null" >
+        email_login = #{emailLogin,jdbcType=VARCHAR},
+      </if>
       <if test="mobile != null" >
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
@@ -356,6 +368,7 @@
     update t_user
     set user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      email_login = #{emailLogin,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       user_icon = #{userIcon,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=INTEGER},
@@ -543,7 +556,13 @@ FROM
 	</where>
 </select>
   
- 
+
+<!-- 
+	 User selectUserByEmail(String email);
+ -->
+<select id="selectUserByEmail" resultMap="BaseResultMap">
+	select * from t_user where email_login=#{email} and deleted=1
+</select>
 
   
   

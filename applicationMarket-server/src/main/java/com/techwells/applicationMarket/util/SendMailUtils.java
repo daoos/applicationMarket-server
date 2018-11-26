@@ -46,13 +46,13 @@ public class SendMailUtils {
     private final static String IS_ENABLED_DEBUG_MOD = "true"; 
  
     // 发件人 
-    private static String from = "18796327106@163.com"; 
+    private static String from = "13648050230@163.com"; 
     
     //发件人的邮箱密码
-    private static String password="as676767as";
+    private static String password="taiwen111";
     
     // 收件人 
-    private static String to = "1655378771@qq.com"; 
+    private static String to = "18796327106@163.com"; 
  
     // 初始化连接邮件服务器的会话信息 
     private static Properties props = null; 
@@ -88,7 +88,7 @@ public class SendMailUtils {
         // 设置邮件主题 
         message.setSubject(subject); 
         // 设置收件人 
-        message.setRecipient(RecipientType.TO, new InternetAddress(to)); 
+        message.setRecipient(RecipientType.TO, new InternetAddress(toEamil)); 
         // 设置发送时间 
         message.setSentDate(new Date()); 
         // 设置纯文本内容为邮件正文 

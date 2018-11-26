@@ -51,6 +51,7 @@ import com.techwells.applicationMarket.util.Base64Util;
 import com.techwells.applicationMarket.util.CRCode;
 import com.techwells.applicationMarket.util.PagingTool;
 import com.techwells.applicationMarket.util.ResultInfo;
+import com.techwells.applicationMarket.util.SendMailUtils;
 import com.techwells.applicationMarket.util.SendSmsUtil;
 import com.techwells.applicationMarket.util.StringUtil;
 import com.techwells.applicationMarket.util.UploadFileUtils;
@@ -87,17 +88,16 @@ public class UserController {
 	@RequestMapping("/user/regist")
 	public Object regist(HttpServletRequest request) {
 		ResultInfo resultInfo = new ResultInfo();
-		String userName = request.getParameter("mobile");
+		String userName = request.getParameter("mobile");  //手机号码或者邮箱
 		String password = request.getParameter("password");
 		String code = request.getParameter("code"); // 验证码
 
 		// 校验参数
 		if (StringUtils.isEmpty(userName)) {
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("手机号码不能为空");
+			resultInfo.setMessage("手机号码或者邮箱不能为空");
 			return resultInfo;
 		}
-
 
 		// 如果密码为空，那么验证验证码
 		if (StringUtils.isEmpty(password)) {
@@ -108,6 +108,7 @@ public class UserController {
 				resultInfo.setMessage("验证码不能为空");
 				return resultInfo;
 			}
+			
 			UserCode userCode=null;
 			try {
 				userCode=userCodeService.getCodeByMobile(userName);
@@ -166,7 +167,7 @@ public class UserController {
 	@RequestMapping("/user/getCode")
 	public Object getCode(HttpServletRequest request) {
 		ResultInfo resultInfo = new ResultInfo();
-		String mobile = request.getParameter("mobile");
+		String mobile = request.getParameter("mobile");  //手机号码或者邮箱
 
 		// 校验参数
 		if (StringUtils.isEmpty(mobile)) {
@@ -190,16 +191,27 @@ public class UserController {
 		
 		//如果为null，可以直接发送
 		if (userCode==null) {
-			try {
-				SendSmsUtil.sendUserCrCode(mobile, code);
-			} catch (Exception e) {
-				logger.error("验证码发送异常",e);
-				resultInfo.setCode("-1");
-				resultInfo.setMessage("验证码发送异常");
-				return resultInfo;
+			if (mobile.contains("@")) {  //如果是邮箱
+				try {
+					SendMailUtils.sendTextEmail("应用市场APP", "验证码："+code, mobile);
+				} catch (Exception e) {
+					logger.error("验证码发送异常",e);
+					resultInfo.setCode("-1");
+					resultInfo.setMessage("验证码发送异常");
+					return resultInfo;
+				}
+			}else {  //如果是手机号码
+				try {
+					SendSmsUtil.sendUserCrCode(mobile, code);
+				} catch (Exception e) {
+					logger.error("验证码发送异常",e);
+					resultInfo.setCode("-1");
+					resultInfo.setMessage("验证码发送异常");
+					return resultInfo;
+				}
 			}
 			
-			//将验证码保存在数据库中
+			//发送成功之后，将验证码保存在数据库中
 			int count=0;
 			try {
 				userCode=new UserCode();
@@ -221,13 +233,24 @@ public class UserController {
 			
 		}else {  //如果验证码在数据库中存在，那么需要更新保存的验证码
 			
-			try {
-				SendSmsUtil.sendUserCrCode(mobile, code);
-			} catch (Exception e) {
-				logger.error("验证码发送异常",e);
-				resultInfo.setCode("-1");
-				resultInfo.setMessage("验证码发送异常");
-				return resultInfo;
+			if (mobile.contains("@")) {  //如果是邮箱
+				try {
+					SendMailUtils.sendTextEmail("应用市场APP", "验证码："+code, mobile);
+				} catch (Exception e) {
+					logger.error("验证码发送异常",e);
+					resultInfo.setCode("-1");
+					resultInfo.setMessage("验证码发送异常");
+					return resultInfo;
+				}
+			}else {  //如果是手机号码
+				try {
+					SendSmsUtil.sendUserCrCode(mobile, code);
+				} catch (Exception e) {
+					logger.error("验证码发送异常",e);
+					resultInfo.setCode("-1");
+					resultInfo.setMessage("验证码发送异常");
+					return resultInfo;
+				}
 			}
 			
 			int count=0;
@@ -263,7 +286,7 @@ public class UserController {
 	@RequestMapping("/user/login")
 	public Object login(HttpServletRequest request) {
 		ResultInfo resultInfo = new ResultInfo();
-		String userName = request.getParameter("useName");
+		String userName = request.getParameter("useName");  //手机号码或者邮箱
 		String password = request.getParameter("password");
 
 		if (StringUtils.isEmpty(userName)) {
@@ -281,9 +304,6 @@ public class UserController {
 		try {
 			Object object = userService.login(userName, password);
 			ResultInfo rs = (ResultInfo) object;
-			if (rs.getCode().equals("1")) {
-				request.getSession().setAttribute("user", rs.getResult());
-			}
 			return object;
 		} catch (Exception e) {
 			resultInfo.setCode("-1");
@@ -789,7 +809,6 @@ public class UserController {
 		}
 		
 	}
-	
 	
 	/**
 	 * 审核用户

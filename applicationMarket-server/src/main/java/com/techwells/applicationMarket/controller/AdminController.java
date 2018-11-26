@@ -82,31 +82,12 @@ public class AdminController {
 			resultInfo.setMessage("密码不能为空");
 			return resultInfo;
 		}
-		
-		
-		//校验验证码
-		
-//		String str=(String) request.getSession().getAttribute(RandomCodeUtils.RANDOM_CODE_KEY);
-//		request.getSession().setAttribute("hello", "hello");
-//		Map<String, Object> map=new HashMap<String, Object>();
-//		map.put("sessioon",str );
-//		map.put("code", code);
-//		map.put("hello", request.getSession().getAttribute("hello"));
-//		if (!code.equals(str)) {
-//			resultInfo.setCode("-1");
-//			resultInfo.setMessage("验证码不正确，请重新输入");
-//			resultInfo.setResult(map);
-//			return resultInfo;
-//		}
-		
-		//实行登录
 		try {
 			Object object=adminService.login(account, password);
 			return object;
 		} catch (Exception e) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("登录异常");
-			
 			return resultInfo;
 		}
 	}
@@ -126,7 +107,6 @@ public class AdminController {
 		String mobile=request.getParameter("mobile");  //手机号码
 		String activated=request.getParameter("activated");    //状态 账号状态  1 启用 0 禁用
 		String authoritys=request.getParameter("authoritys");  //权限列表，用逗号分割
-//		String deptId=request.getParameter("deptId");
 		String description=request.getParameter("description");   //权限描述
 		
 		//校验参数
@@ -178,13 +158,11 @@ public class AdminController {
 //			return resultInfo;
 //		}
 		
-		//校验格式
 		
 		Admin admin=new Admin();
 		admin.setAccount(account);
 		admin.setEmail(email);
 		admin.setCreatedDate(new Date());
-//		admin.setDeptId(Integer.parseInt(deptId));
 		admin.setDescription(description);
 		admin.setMobile(mobile);
 		admin.setActivated(Integer.parseInt(activated));

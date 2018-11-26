@@ -14,6 +14,8 @@ public class User {
 
     private String userIcon;
 
+    private String emailLogin;
+    
     private Integer gender;
 
     private String address;
@@ -69,6 +71,14 @@ public class User {
 
 	public String getSwtcBalance() {
 		return swtcBalance;
+	}
+
+	public String getEmailLogin() {
+		return emailLogin;
+	}
+
+	public void setEmailLogin(String emailLogin) {
+		this.emailLogin = emailLogin;
 	}
 
 	public void setSwtcBalance(String swtcBalance) {

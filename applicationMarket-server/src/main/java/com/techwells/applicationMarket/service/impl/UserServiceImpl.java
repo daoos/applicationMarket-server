@@ -54,31 +54,57 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Object regist(String userName, String password) throws Exception {
 		ResultInfo resultInfo = new ResultInfo();
-		// 判断用户账号是否存在，如果不存在，那么可以直接注册
-		User user = userMapper.selectUserByUserName(userName);
+		
+		if (userName.contains("@")) {//如果是邮箱注册
+			User user=userMapper.selectUserByEmail(userName);
+			// 已经被注册了
+			if (user != null) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("该账号已经被注册了");
+				return resultInfo;
+			}
 
-		// 已经被注册了
-		if (user != null) {
-			resultInfo.setCode("-1");
-			resultInfo.setMessage("该账号已经被注册了");
-			return resultInfo;
+			// 如果没有被注册，那么可以直接注册
+			user = new User(); // 需要创建
+			user.setEmailLogin(userName);
+			user.setPassword(password);
+			user.setCreateDate(new Date());
+
+			int count = userMapper.insertSelective(user);
+
+			if (count == 0) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("注册失败");
+				return resultInfo;
+			}
+			
+			
+		}else {  //如果是手机号码注册
+			// 判断用户账号是否存在，如果不存在，那么可以直接注册
+			User user = userMapper.selectUserByUserName(userName);
+			// 已经被注册了
+			if (user != null) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("该账号已经被注册了");
+				return resultInfo;
+			}
+
+			// 如果没有被注册，那么可以直接注册
+			user = new User(); // 需要创建
+			user.setUserName(userName);
+			user.setMobile(userName);
+			user.setPassword(password);
+			user.setCreateDate(new Date());
+
+			int count = userMapper.insertSelective(user);
+
+			if (count == 0) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("注册失败");
+				return resultInfo;
+			}
 		}
-
-		// 如果没有被注册，那么可以直接注册
-		user = new User(); // 需要创建
-		user.setUserName(userName);
-		user.setMobile(userName);
-		user.setPassword(password);
-		user.setCreateDate(new Date());
-
-		int count = userMapper.insertSelective(user);
-
-		if (count == 0) {
-			resultInfo.setCode("-1");
-			resultInfo.setMessage("注册失败");
-			return resultInfo;
-		}
-
+		
 		resultInfo.setMessage("注册成功");
 		return resultInfo;
 	}
@@ -86,9 +112,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Object login(String userName, String password) throws Exception {
 		ResultInfo resultInfo = new ResultInfo();
-
-		User user = userMapper.selectUserByUserName(userName);
-
+		User user=null;
+		
+		if (userName.contains("@")) {  //如果是邮箱
+			user=userMapper.selectUserByEmail(userName);
+		}else {  //如果是手机号码
+			user = userMapper.selectUserByUserName(userName);
+		}
+		
 		if (user == null) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("该用户不存在");
@@ -96,7 +127,6 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// 如果用户存在，验证密码
-
 		if (!user.getPassword().equals(password)) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("密码错误");
@@ -114,7 +144,6 @@ public class UserServiceImpl implements UserService {
 		resultInfo.setMessage("登录成功");
 		resultInfo.setResult(user);
 		return resultInfo;
-
 	}
 
 	@Override

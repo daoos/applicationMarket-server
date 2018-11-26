@@ -28,6 +28,13 @@ public interface UserMapper {
     User selectUserByUserName(String userName);
     
     /**
+     * 根据邮箱获取用户信息
+     * @param userName  用户名 账号
+     * @return
+     */
+    User selectUserByEmail(String email);
+    
+    /**
      * 获取用户审核列表 分页
      * @param pagingTool
      * @return
