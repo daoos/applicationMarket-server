@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,8 @@ public class ReportController {
 	
 	@Resource
 	private AppReportService appReportService;
+	
+	private Logger logger=org.slf4j.LoggerFactory.getLogger(ReportController.class);
 	
 	
 	/**
@@ -70,7 +73,6 @@ public class ReportController {
 		ResultInfo resultInfo=new ResultInfo();
 		String reasons=request.getParameter("reasons");  //原因Id，逗号分割
 		String content=request.getParameter("content");  //举报的内容
-//		String[] images=request.getParameterValues("images");  //图片的base64的数组
 		
 		//校验参数
 		
@@ -118,6 +120,11 @@ public class ReportController {
 //				return resultInfo;
 //			}
 			
+			if (!targetFile.getParentFile().exists()) {
+				targetFile.getParentFile().mkdirs();
+			}
+			
+			
 			//保存图片
 			try {
 				image.transferTo(targetFile);
@@ -150,6 +157,7 @@ public class ReportController {
 			Object object=appReportService.addReport(report, reportImages);
 			return object;
 		} catch (Exception e) {
+			logger.error("添加异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("添加异常");
 			return resultInfo;

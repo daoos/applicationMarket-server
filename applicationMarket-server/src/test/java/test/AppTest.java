@@ -60,9 +60,7 @@ public class AppTest {
 	
 	@Test
 	public void test3() throws IOException{
-		ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("spring-mybatis.xml");
-		QuartzService quartzService=context.getBean("quartzServiceImpl",QuartzService.class);
-		quartzService.getMoacTrasactionDetail();
+		System.out.println("http://www.emoonbow.com/applicationMarket-upload/feedBack-image/1542961657965magazine-unlock-01-2.3.1173-_693D863FBBAD249AB99DE3DADF216CC5.jpg".length());
 	}
 	
 

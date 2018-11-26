@@ -110,11 +110,11 @@ public class QuartzServiceImpl implements QuartzService {
 				detail.setFromAddress(transactionDetail.getFrom());  //转账方的钱包地址
 				detail.setToAddress(transactionDetail.getTo());
 				detail.setFee((Double)(Long.parseLong(transactionDetail.getGas())/1000000000000000000.0*Long.parseLong(transactionDetail.getGasPrice())));   //旷工费用
-				detail.setRemark("任务奖励发放");   //设置备注为转账
+//				detail.setRemark("任务奖励发放");   //设置备注为转账
 				Date trsdate=new Date();   //交易日期
 				detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
 //				detail.setActivated(1);  //设置钱包的类型
-				detail.setMoney("-"+transactionDetail.getValue());
+//				detail.setMoney("-"+transactionDetail.getValue());
 //				detail.setWalletId(wallet.getWalletId());
 //				detail.setHash(hash);
 				int count=detailMapper.updateByPrimaryKeySelective(detail);

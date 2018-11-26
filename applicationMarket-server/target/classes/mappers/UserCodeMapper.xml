@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.UserCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.UserCode" >
+    <id column="code_id" property="codeId" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    code_id, mobile, code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_code
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_code
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.UserCode" >
+    <selectKey resultType="java.lang.Integer" keyProperty="codeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_user_code (mobile, code)
+    values (#{mobile,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.UserCode" >
+    <selectKey resultType="java.lang.Integer" keyProperty="codeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_user_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.UserCode" >
+    update t_user_code
+    <set >
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.UserCode" >
+    update t_user_code
+    set mobile = #{mobile,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR}
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- 
+  	 UserCode selectUserCodeByMobile(String mobile);
+   -->
+  <select id="selectUserCodeByMobile" resultMap="BaseResultMap">
+  	select 
+    *
+    from t_user_code
+    where mobile=#{mobile}
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

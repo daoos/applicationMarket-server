@@ -284,7 +284,7 @@ public class WalletServiceImpl implements WalletService{
 			return resultInfo;
 		}
 		
-		//检查密码是否正确
+		
 		Wallet wallet=walletMapper.selectByPrimaryKey(detail.getWalletId());
 		if (wallet==null) {
 			resultInfo.setCode("-1");
@@ -296,19 +296,46 @@ public class WalletServiceImpl implements WalletService{
 		//转账
 		if (wallet.getType().equals(1)) {   //Moac钱包转账
 			//墨客转账是在前台完成的，这里只需要用hash值查询转账的信息即可
-			TransactionDetail transactionDetail=MoacUtils.getTransactionDetail(detail.getHash());
-			detail.setNumber(System.currentTimeMillis()+"");
-			detail.setCreateDate(new Date());  //设置创建日期
-			detail.setBlock(transactionDetail.getBlockNumber());   //设置区块信息
-			detail.setFromAddress(transactionDetail.getFrom());  //转账方的钱包地址
-			detail.setToAddress(transactionDetail.getTo());
-			detail.setFee((Double)(Long.parseLong(transactionDetail.getGas())/1000000000000000000.0*Long.parseLong(transactionDetail.getGasPrice())));   //旷工费用
+//			TransactionDetail transactionDetail=MoacUtils.getTransactionDetail(detail.getHash());
+//			detail.setNumber(System.currentTimeMillis()+"");
+//			detail.setCreateDate(new Date());  //设置创建日期
+//			detail.setBlock(transactionDetail.getBlockNumber());   //设置区块信息
+//			detail.setFromAddress(transactionDetail.getFrom());  //转账方的钱包地址
+//			detail.setToAddress(transactionDetail.getTo());
+//			detail.setFee((Double)(Long.parseLong(transactionDetail.getGas())/1000000000000000000.0*Long.parseLong(transactionDetail.getGasPrice())));   //旷工费用
+//			detail.setRemark("转账");   //设置备注为转账
+//			Date trsdate=new Date();   //交易日期
+//			detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
+////			detail.setUrl(SwtcUtils.HTTP+"v2/transactions/"+hash);   //设置公开查账的地址
+//			detail.setActivated(wallet.getType());  //设置钱包的类型
+//			detail.setMoney("-"+transactionDetail.getValue());
+			
+			//根据用户Id获取moac钱包
+//			Wallet wallet=walletMapper.selectWallet(userTask.getUserId(), 1);
+//			
+//			if (wallet==null) {
+//				resultInfo.setCode("999999");   //特殊的返回码，前台需要定制
+//				resultInfo.setMessage("您还没有导入钱包账户，请导入井通钱包账户");
+//				return resultInfo;
+//			}
+			
+			//由于交易延迟的问题，因此先保留交易的hash
+//			WalletDetail detail=new WalletDetail();
+			//墨客转账是在前台完成的，这里只需要用hash值查询转账的信息即可
+//			TransactionDetail transactionDetail=MoacUtils.getTransactionDetail(hash);
+//			detail.setNumber(System.currentTimeMillis()+"");
+//			detail.setCreateDate(new Date());  //设置创建日期
+//			detail.setBlock(transactionDetail.getBlockNumber());   //设置区块信息
+//			detail.setFromAddress(transactionDetail.getFrom());  //转账方的钱包地址
+//			detail.setToAddress(transactionDetail.getTo());
+//			detail.setFee((Double)(Long.parseLong(transactionDetail.getGas())/1000000000000000000.0*Long.parseLong(transactionDetail.getGasPrice())));   //旷工费用
 			detail.setRemark("转账");   //设置备注为转账
-			Date trsdate=new Date();   //交易日期
-			detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
-//			detail.setUrl(SwtcUtils.HTTP+"v2/transactions/"+hash);   //设置公开查账的地址
-			detail.setActivated(wallet.getType());  //设置钱包的类型
-			detail.setMoney("-"+transactionDetail.getValue());
+//			Date trsdate=new Date();   //交易日期
+//			detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
+			detail.setActivated(1);  //设置钱包的类型
+			detail.setFromAddress(wallet.getAddress());
+//			detail.setMoney("-"+transactionDetail.getValue());
+			
 		}else if (wallet.getType().equals(2)) {   //井通钱包
 			//密码不正确
 			if (!pwd.equals(wallet.getPassword())) {

@@ -109,7 +109,7 @@ public class keyStoreUtils {
 	public void getAddress() throws Exception{
 		String path="C:\\images\\UTC--2018-11-16T10-33-32.48000000Z--dfc04431e03652a7f5abbf074aa63e7db51baed2.json";
 		String password="12345678";
-		System.out.println(getAddress(path,password));
+		System.out.println(getPrivateKey(path, "12345678"));
 	}
 	
 	

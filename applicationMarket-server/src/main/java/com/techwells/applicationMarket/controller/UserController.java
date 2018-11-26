@@ -24,6 +24,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,7 +42,10 @@ import org.web3j.abi.datatypes.Int;
 
 import com.aliyuncs.http.HttpRequest;
 import com.techwells.applicationMarket.domain.User;
+import com.techwells.applicationMarket.domain.UserCode;
+import com.techwells.applicationMarket.service.UserCodeService;
 import com.techwells.applicationMarket.service.UserService;
+import com.techwells.applicationMarket.service.impl.UserCodeServiceImpl;
 import com.techwells.applicationMarket.util.ApplicationMarketConstants;
 import com.techwells.applicationMarket.util.Base64Util;
 import com.techwells.applicationMarket.util.CRCode;
@@ -61,6 +66,13 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
+	
+	@Resource
+	private UserCodeService userCodeService;
+	
+	
+	private Logger logger=LoggerFactory.getLogger(UserController.class);
+	
 
 	/**
 	 * 用户注册
@@ -96,41 +108,29 @@ public class UserController {
 				resultInfo.setMessage("验证码不能为空");
 				return resultInfo;
 			}
-
-			// 验证验证码，时长一分钟
-			CRCode crCode = (CRCode) request.getSession().getAttribute("code");
-
-			if (crCode == null) {
+			UserCode userCode=null;
+			try {
+				userCode=userCodeService.getCodeByMobile(userName);
+			} catch (Exception e) {
+				logger.error("获取验证码异常");
 				resultInfo.setCode("-1");
-				resultInfo.setMessage("请先获取验证码");
+				resultInfo.setMessage("获取验证码异常");
 				return resultInfo;
 			}
-
-			// 获取了验证码
-
-			// 手机号码不同了
-			if (!crCode.getMobile().equals(userName)) {
+			
+			//如果验证码为空
+			if (userCode==null) {
 				resultInfo.setCode("-1");
-				resultInfo.setMessage("该手机号码没有获取验证码，请先获取验证码");
+				resultInfo.setMessage("请先发送验证码");
 				return resultInfo;
 			}
-
-			// 验证10分钟
-			Long sendTime = crCode.getSendDate().getTime();
-			// 如果时间大于10分钟
-			if (((System.currentTimeMillis() - sendTime) / 1000 / 60) > 10) {
+			
+			//验证码不为空
+			if (!userCode.getCode().equals(code)) {
 				resultInfo.setCode("-1");
-				resultInfo.setMessage("验证码失效，请重新发送");
+				resultInfo.setMessage("验证码不正确");
 				return resultInfo;
 			}
-
-			// 验证码是否相同
-			if (!code.equals(crCode.getCrCode())) {
-				resultInfo.setCode("-1");
-				resultInfo.setMessage("验证码错误，请重新输入");
-				return resultInfo;
-			}
-
 			resultInfo.setMessage("验证码正确");
 			return resultInfo;
 
@@ -157,6 +157,7 @@ public class UserController {
 
 	/**
 	 * 获取短信的验证码
+	 *  ---- 手机中不能存储session，因此需要将数据保存在数据库中
 	 * @param mobile
 	 *            手机号码
 	 * @param request
@@ -168,86 +169,87 @@ public class UserController {
 		String mobile = request.getParameter("mobile");
 
 		// 校验参数
-
 		if (StringUtils.isEmpty(mobile)) {
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("手机号码不能为空");
 			return resultInfo;
 		}
 
-
 		String code = SendSmsUtil.getSixRadam(); // 获取六位随机的验证码
-
-		// 验证码限制，一个小时十条
-		CRCode crCode = (CRCode) request.getSession().getAttribute("code");
-
-		// 如果session中没有信息，那么可以直接发送
-		if (crCode == null) {
+		UserCode userCode=null;
+		
+		try {
+			userCode=userCodeService.getCodeByMobile(mobile);
+		} catch (Exception e) {
+			logger.error("获取验证码异常",e);
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("获取验证码异常");
+			return resultInfo;
+		}
+		
+		
+		//如果为null，可以直接发送
+		if (userCode==null) {
 			try {
-				SendSmsUtil.sendCodeByModifyPassword(mobile, code); // 发送
-				crCode = new CRCode();
-				crCode.setMobile(mobile);
-				crCode.setCrCode(code);
-				crCode.setNumber(1);
-				crCode.setSendDate(new Date());
-				request.getSession().setAttribute("code", crCode);
-				resultInfo.setMessage("发送成功");
-				return resultInfo;
+				SendSmsUtil.sendUserCrCode(mobile, code);
 			} catch (Exception e) {
-				e.printStackTrace();
-				resultInfo.setMessage("验证码发送异常");
+				logger.error("验证码发送异常",e);
 				resultInfo.setCode("-1");
+				resultInfo.setMessage("验证码发送异常");
+				return resultInfo;
+			}
+			
+			//将验证码保存在数据库中
+			int count=0;
+			try {
+				userCode=new UserCode();
+				userCode.setMobile(mobile);
+				userCode.setCode(code);
+				count=userCodeService.addCode(userCode);
+			} catch (Exception e) {
+				logger.error("保存验证码异常",e);
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("保存验证码异常");
+				return resultInfo;
+			}
+			
+			if ( count==0) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("验证码发送失败");
+				return resultInfo;
+			}
+			
+		}else {  //如果验证码在数据库中存在，那么需要更新保存的验证码
+			
+			try {
+				SendSmsUtil.sendUserCrCode(mobile, code);
+			} catch (Exception e) {
+				logger.error("验证码发送异常",e);
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("验证码发送异常");
+				return resultInfo;
+			}
+			
+			int count=0;
+			try {
+				userCode.setCode(code); //修改验证码
+				count=userCodeService.modifyUserCode(userCode);
+			} catch (Exception e) {
+				logger.error("更新验证码异常",e);
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("更新验证码异常");
+				return resultInfo;
+			}
+			
+			if (count==0) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("修改验证码失败");
 				return resultInfo;
 			}
 		}
-
-		// 如果session已经存在了，需要判断一个小时之内的条数
-
-		// 判断是否间隔了一个小时了
-
-		Long sendTime = crCode.getSendDate().getTime();
-
-		// 如果大于一个小时了，那么可以直接发送了
-		if (((System.currentTimeMillis() - sendTime) / 1000 / 3600) > 1) {
-			try {
-				SendSmsUtil.sendCodeByModifyPassword(mobile, code); // 发送
-				crCode.setMobile(mobile);
-				crCode.setCrCode(code);
-				crCode.setNumber(1); // 短信的条数恢复 成一条
-				crCode.setSendDate(new Date());
-				request.getSession().setAttribute("code", crCode);
-				resultInfo.setMessage("发送成功");
-				return resultInfo;
-			} catch (Exception e) {
-				resultInfo.setMessage("验证码发送异常");
-				resultInfo.setCode("-1");
-				return resultInfo;
-			}
-		} else { // 如果没有超过一个小时，那么验证短信的条数
-
-			if (crCode.getNumber() > 10) {
-				resultInfo.setCode("-1");
-				resultInfo.setMessage("一个小时之内只能发送10条");
-				return resultInfo;
-			} else {
-				try {
-					SendSmsUtil.sendCodeByModifyPassword(mobile, code); // 发送
-					crCode.setMobile(mobile);
-					crCode.setCrCode(code);
-					crCode.setNumber(crCode.getNumber() + 1); // 短信的条数恢复 成一条
-					crCode.setSendDate(new Date());
-					request.getSession().setAttribute("code", crCode);
-					resultInfo.setMessage("发送成功");
-					return resultInfo;
-				} catch (Exception e) {
-					resultInfo.setMessage("验证码发送异常");
-					resultInfo.setCode("-1");
-					return resultInfo;
-				}
-			}
-
-		}
-
+		
+		resultInfo.setMessage("验证码发送成功");
+		return resultInfo;
 	}
 
 	/**
@@ -327,47 +329,36 @@ public class UserController {
 			return resultInfo;
 		}
 
-		if (!StringUtil.isNumber(code)) {
+		UserCode userCode=null;
+		try {
+			userCode=userCodeService.getCodeByMobile(userName);
+		} catch (Exception e) {
+			logger.error("获取验证码异常");
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("验证码格式不对");
+			resultInfo.setMessage("获取验证码异常");
 			return resultInfo;
 		}
-
-
-		CRCode crCode = (CRCode) request.getSession().getAttribute("code");
-		if (crCode == null) {
+		
+		//如果验证码为空
+		if (userCode==null) {
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("请先获取验证码");
+			resultInfo.setMessage("请先发送验证码");
 			return resultInfo;
 		}
-
-		if (!crCode.getMobile().equals(userName)) {
+		
+		//验证码不为空
+		if (!userCode.getCode().equals(code)) {
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("请先获取验证码");
+			resultInfo.setMessage("验证码不正确");
 			return resultInfo;
 		}
-
-		// 验证10分钟
-		Long sendTime = crCode.getSendDate().getTime();
-		// 如果时间大于10分钟
-		if (((System.currentTimeMillis() - sendTime) / 1000 / 60) > 10) {
-			resultInfo.setCode("-1");
-			resultInfo.setMessage("验证码失效，请重新发送");
-			return resultInfo;
-		}
-
-		// 验证码是否相同
-		if (!code.equals(crCode.getCrCode())) {
-			resultInfo.setCode("-1");
-			resultInfo.setMessage("验证码错误，请重新输入");
-			return resultInfo;
-		}
-
+		
+		//验证码正确就能修改密码了
 		try {
 			Object object = userService.forgetPassword(userName, newPwd);
 			return object;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("修改密码异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("修改密码异常");
 			return resultInfo;
@@ -923,38 +914,27 @@ public class UserController {
 		}
 		
 		
-		//判断验证码是否已经发送
-		// 验证验证码，时长一分钟
-		CRCode crCode = (CRCode) request.getSession().getAttribute("code");
-
-		if (crCode == null) {
+		UserCode userCode=null;
+		try {
+			userCode=userCodeService.getCodeByMobile(mobile);
+		} catch (Exception e) {
+			logger.error("获取验证码异常");
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("请先获取验证码");
+			resultInfo.setMessage("获取验证码异常");
 			return resultInfo;
 		}
-
-		// 获取了验证码
-
-		// 手机号码不同了
-		if (!crCode.getMobile().equals(mobile)) {
+		
+		//如果验证码为空
+		if (userCode==null) {
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("该手机号码没有获取验证码，请先获取验证码");
+			resultInfo.setMessage("请先发送验证码");
 			return resultInfo;
 		}
-
-		// 验证一分钟
-		Long sendTime = crCode.getSendDate().getTime();
-		// 如果时间大于一分钟
-		if (((System.currentTimeMillis() - sendTime) / 1000 / 60) > 10) {
+		
+		//验证码不为空
+		if (!userCode.getCode().equals(code)) {
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("验证码失效，请重新发送");
-			return resultInfo;
-		}
-
-		// 验证码是否相同
-		if (!code.equals(crCode.getCrCode())) {
-			resultInfo.setCode("-1");
-			resultInfo.setMessage("验证码错误，请重新输入");
+			resultInfo.setMessage("验证码不正确");
 			return resultInfo;
 		}
 		

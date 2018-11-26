@@ -483,7 +483,7 @@ public class WalletController {
 		WalletDetail detail=new WalletDetail();  
 		detail.setWalletId(Integer.parseInt(walletId));
 		detail.setToAddress(toAddress);
-		detail.setMoney(money);
+		detail.setMoney("-"+money);
 		detail.setHash(hash);
 		
 		//调用service层的
@@ -753,6 +753,36 @@ public class WalletController {
 			logger.error("获取moac钱包异常",e);
 			resultInfo.setCode("-1");
 			resultInfo.setMessage("异常");
+			return resultInfo;
+		}
+	}
+	
+	
+	
+	/**
+	 * 获取keystore文件
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/wallet/getkeyStore")
+	public Object getkeyStore(HttpServletRequest request) {
+		ResultInfo resultInfo=new ResultInfo();
+		String walletId=request.getParameter("walletId"); //钱包Id
+		if (StringUtils.isEmpty(walletId)) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("钱包Id不能为空");
+			return resultInfo;
+		}
+		
+		try {
+			Wallet wallet=walletService.getWallet(Integer.parseInt(walletId));
+			resultInfo.setMessage("获取成功");
+			resultInfo.setResult(wallet);
+			return resultInfo;
+		} catch (Exception e) {
+			logger.error("获取钱包信息异常",e);
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("获取异常");
 			return resultInfo;
 		}
 	}

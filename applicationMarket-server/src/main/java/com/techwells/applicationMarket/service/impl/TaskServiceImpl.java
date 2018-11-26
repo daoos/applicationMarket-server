@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.druid.util.StringUtils;
 import com.techwells.applicationMarket.dao.AppMapper;
 import com.techwells.applicationMarket.dao.SystemConfigMapper;
 import com.techwells.applicationMarket.dao.TaskMapper;
@@ -258,7 +259,12 @@ public class TaskServiceImpl implements TaskService{
 		//未发放，存在，那么就需要进行转账了
 		
 		if (userTask.getActivated().equals(1)) {  //如果是MOAC，前台进行转账，这里改变下状态即可
-//			Thread.sleep(4000);
+
+			if (StringUtils.isEmpty(hash)) {
+				resultInfo.setCode("-1");
+				resultInfo.setMessage("hash不能为空");
+				return resultInfo;
+			}
 			
 			//开发商只有配置了账号才能进行转账
 //			if (config.getSwtcAddress()==null||config.getSwtcSecret()==null) {
@@ -291,12 +297,13 @@ public class TaskServiceImpl implements TaskService{
 			//墨客转账是在前台完成的，这里只需要用hash值查询转账的信息即可
 //			TransactionDetail transactionDetail=MoacUtils.getTransactionDetail(hash);
 //			detail.setNumber(System.currentTimeMillis()+"");
-//			detail.setCreateDate(new Date());  //设置创建日期
+			detail.setCreateDate(new Date());  //设置创建日期
 //			detail.setBlock(transactionDetail.getBlockNumber());   //设置区块信息
 //			detail.setFromAddress(transactionDetail.getFrom());  //转账方的钱包地址
 //			detail.setToAddress(transactionDetail.getTo());
 //			detail.setFee((Double)(Long.parseLong(transactionDetail.getGas())/1000000000000000000.0*Long.parseLong(transactionDetail.getGasPrice())));   //旷工费用
-//			detail.setRemark("任务奖励发放");   //设置备注为转账
+			detail.setRemark("任务奖励发放");   //设置备注为转账
+			detail.setMoney("+"+userTask.getMoney());
 //			Date trsdate=new Date();   //交易日期
 //			detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
 			detail.setActivated(userTask.getActivated());  //设置钱包的类型
@@ -310,7 +317,6 @@ public class TaskServiceImpl implements TaskService{
 			}
 			
 		}else if(userTask.getActivated().equals(2)){  //如果是井通
-			
 			//开发商只有配置了账号才能进行转账
 			if (config.getSwtcAddress()==null||config.getSwtcSecret()==null) {
 				resultInfo.setCode("-1");
@@ -380,7 +386,7 @@ public class TaskServiceImpl implements TaskService{
 			detail.setTransactionDate(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));  //交易时间
 			detail.setUrl(SwtcUtils.HTTP+"v2/transactions/"+hash);   //设置公开查账的地址
 			detail.setActivated(wallet.getType());  //设置钱包的类型
-			detail.setMoney("-"+userTask.getMoney());
+			detail.setMoney("+"+userTask.getMoney());
 			detail.setWalletId(wallet.getWalletId());
 			
 			int count=detailMapper.insertSelective(detail);
