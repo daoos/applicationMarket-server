@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.techwells.applicationMarket.dao.ApkVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.techwells.applicationMarket.domain.ApkVersion" >
+    <id column="version_id" property="versionId" jdbcType="INTEGER" />
+    <result column="version_code" property="versionCode" jdbcType="VARCHAR" />
+    <result column="version_number" property="versionNumber" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="is_last" property="isLast" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    version_id, version_code, version_number, type, download_url, is_last
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apk_version
+    where version_id = #{versionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_apk_version
+    where version_id = #{versionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.techwells.applicationMarket.domain.ApkVersion" >
+    <selectKey resultType="java.lang.Integer" keyProperty="versionId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apk_version (version_code, version_number, type, 
+      download_url, is_last)
+    values (#{versionCode,jdbcType=VARCHAR}, #{versionNumber,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{downloadUrl,jdbcType=VARCHAR}, #{isLast,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.techwells.applicationMarket.domain.ApkVersion" >
+    <selectKey resultType="java.lang.Integer" keyProperty="versionId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_apk_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="versionCode != null" >
+        version_code,
+      </if>
+      <if test="versionNumber != null" >
+        version_number,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="downloadUrl != null" >
+        download_url,
+      </if>
+      <if test="isLast != null" >
+        is_last,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="versionCode != null" >
+        #{versionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNumber != null" >
+        #{versionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="downloadUrl != null" >
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isLast != null" >
+        #{isLast,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.techwells.applicationMarket.domain.ApkVersion" >
+    update t_apk_version
+    <set >
+      <if test="versionCode != null" >
+        version_code = #{versionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNumber != null" >
+        version_number = #{versionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="downloadUrl != null" >
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isLast != null" >
+        is_last = #{isLast,jdbcType=INTEGER},
+      </if>
+    </set>
+    where version_id = #{versionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.techwells.applicationMarket.domain.ApkVersion" >
+    update t_apk_version
+    set version_code = #{versionCode,jdbcType=VARCHAR},
+      version_number = #{versionNumber,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      is_last = #{isLast,jdbcType=INTEGER}
+    where version_id = #{versionId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 
+  	ApkVersion selectLastApkVersionByType(Integer type);
+   -->
+  <select id="selectLastApkVersionByType" resultMap="BaseResultMap">
+  	SELECT
+	*
+FROM
+	t_apk_version
+WHERE
+	is_last = 1
+AND type = #{type}
+  </select>
+  
+</mapper>

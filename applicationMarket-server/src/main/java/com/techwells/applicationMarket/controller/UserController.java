@@ -168,11 +168,14 @@ public class UserController {
 	public Object getCode(HttpServletRequest request) {
 		ResultInfo resultInfo = new ResultInfo();
 		String mobile = request.getParameter("mobile");  //手机号码或者邮箱
-
+		
+		logger.error("发送邮箱----------------->"+mobile);
+		
+		
 		// 校验参数
 		if (StringUtils.isEmpty(mobile)) {
 			resultInfo.setCode("-1");
-			resultInfo.setMessage("手机号码不能为空");
+			resultInfo.setMessage("手机号码或者邮箱不能为空");
 			return resultInfo;
 		}
 
@@ -193,7 +196,7 @@ public class UserController {
 		if (userCode==null) {
 			if (mobile.contains("@")) {  //如果是邮箱
 				try {
-					SendMailUtils.sendTextEmail("应用市场APP", "验证码："+code, mobile);
+					SendMailUtils.sendEmail(mobile,"应用市场APP", "验证码："+code);
 				} catch (Exception e) {
 					logger.error("验证码发送异常",e);
 					resultInfo.setCode("-1");
@@ -234,8 +237,9 @@ public class UserController {
 		}else {  //如果验证码在数据库中存在，那么需要更新保存的验证码
 			
 			if (mobile.contains("@")) {  //如果是邮箱
+				logger.error("进入邮箱----------------->"+mobile);
 				try {
-					SendMailUtils.sendTextEmail("应用市场APP", "验证码："+code, mobile);
+					SendMailUtils.sendEmail(mobile,"应用市场APP", "验证码："+code);
 				} catch (Exception e) {
 					logger.error("验证码发送异常",e);
 					resultInfo.setCode("-1");

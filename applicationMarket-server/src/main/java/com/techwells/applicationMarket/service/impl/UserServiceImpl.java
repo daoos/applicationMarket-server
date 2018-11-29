@@ -382,13 +382,17 @@ public class UserServiceImpl implements UserService {
 //		}
 		
 		
+		Task shareTask=taskMapper.selectByPrimaryKey(12);  //获取任务清单中的分享app
+		Task signTask=taskMapper.selectByPrimaryKey(10);  //获取任务清单中的签到
+		
 		//获取一个钱包
 		List<Wallet> wallets=walletMapper.selectWallets(userId);   
 		
 		//封装返回的数据
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("wallet", wallets.size()!=0?wallets.get(0):null);  //钱包信息
-//		map.put("tasks",taskAppVersionVos);  //任务清单
+		map.put("shareTask", shareTask);
+		map.put("signTask", signTask);
 		
 		//获取安装记录，（安卓）
 		if (platform.equals(1)) {  //如果是安卓，那么需要查询安装记录

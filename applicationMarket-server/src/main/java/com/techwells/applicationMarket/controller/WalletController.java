@@ -483,7 +483,7 @@ public class WalletController {
 		WalletDetail detail=new WalletDetail();  
 		detail.setWalletId(Integer.parseInt(walletId));
 		detail.setToAddress(toAddress);
-		detail.setMoney("-"+money);
+		detail.setMoney(money);
 		detail.setHash(hash);
 		
 		//调用service层的

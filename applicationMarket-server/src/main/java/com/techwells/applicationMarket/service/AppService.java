@@ -306,6 +306,15 @@ public interface AppService {
 	 */
 	Object cancelRecommend(Integer appId)throws Exception;
 
+	/**
+	 * 删除安装记录
+	 * @param appId  应用Id
+	 * @param userId 用户Id
+	 * @return
+	 * @throws Exception
+	 */
+	Object deleteAppInstallRecord(Integer appId, Integer userId)throws Exception;
+
 	
 	
 	

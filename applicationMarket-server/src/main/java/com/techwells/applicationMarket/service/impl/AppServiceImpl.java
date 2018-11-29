@@ -1192,5 +1192,23 @@ public class AppServiceImpl implements AppService{
 		resultInfo.setMessage("成功");
 		return resultInfo;
 	}
+
+	@Override
+	public Object deleteAppInstallRecord(Integer appId, Integer userId)
+			throws Exception {
+		ResultInfo resultInfo=new ResultInfo();
+		UserAppKey userAppKey=new UserAppKey();
+		userAppKey.setUserId(userId);
+		userAppKey.setAppId(appId);
+		
+		int count=userAppMapper.deleteByPrimaryKey(userAppKey);
+		if (count==0) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("删除失败");
+			return resultInfo;
+		}
+		resultInfo.setMessage("删除成功");
+		return resultInfo;
+	}
 	
 }

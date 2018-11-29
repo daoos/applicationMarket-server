@@ -27,6 +27,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,6 +48,7 @@ import com.techwells.applicationMarket.domain.AppImage;
 import com.techwells.applicationMarket.domain.AppVersion;
 import com.techwells.applicationMarket.domain.User;
 import com.techwells.applicationMarket.domain.UserApp;
+import com.techwells.applicationMarket.domain.UserAppKey;
 import com.techwells.applicationMarket.service.AppService;
 import com.techwells.applicationMarket.service.AppVersionService;
 import com.techwells.applicationMarket.service.UserService;
@@ -69,6 +72,7 @@ public class AppController {
 	private UserService userService;
 	@Resource
 	private AppVersionService versionService;
+	private Logger logger=LoggerFactory.getLogger(AppController.class);
 	
 	/**
 	 * 添加应用
@@ -844,7 +848,6 @@ public class AppController {
 			return resultInfo;
 		}
 	}
-
 	
 	/**
 	 * 下载应用
@@ -1960,7 +1963,6 @@ public class AppController {
 	}
 	 
 	
-	
 	/**
 	 * 设为必备和取消必备
 	 * @param appId  应用Id
@@ -1999,8 +2001,6 @@ public class AppController {
 		}
 		
 	}
-	
-	
 	
 	/**
 	 * 批量删除
@@ -2182,6 +2182,44 @@ public class AppController {
 		}
 	}
 	
+	
+	/**
+	 * 删除安装记录
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/app/deleteInstallRecord")
+	public Object deleteInstallRecord(HttpServletRequest request){
+		ResultInfo resultInfo=new ResultInfo();
+		String appId=request.getParameter("appId");  //应用Id
+		String userId=request.getParameter("userId");  //用户Id
+		
+		if (StringUtils.isEmpty(appId)) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("应用Id不能为空");
+			return resultInfo;
+		}
+		
+		if (StringUtils.isEmpty(userId)) {
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("用户Id不能为空");
+			return resultInfo;
+		}
+		
+		//调用service
+		try {
+			Object object=appService.deleteAppInstallRecord(Integer.parseInt(appId),Integer.parseInt(userId));
+			return object;
+		} catch (Exception e) {
+			logger.error("删除安装记录异常",e);
+			resultInfo.setCode("-1");
+			resultInfo.setMessage("删除安装记录异常");
+			return resultInfo;
+		}
+		
+		
+		
+	}
 	
 	
 	

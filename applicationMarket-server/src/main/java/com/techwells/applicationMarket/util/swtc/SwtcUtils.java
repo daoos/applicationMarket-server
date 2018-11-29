@@ -87,7 +87,8 @@ public class SwtcUtils {
     	//1.0939962 E7
     	//1.0940847 E7
     	//1.0941451E7
-    	System.out.println(getTransaction("9119737A7E326E4C11CDAF12C3709712AEDA7618A76E4F1D9336329C728BC941"));
+//    	System.out.println(getTransaction("9119737A7E326E4C11CDAF12C3709712AEDA7618A76E4F1D9336329C728BC941"));
+    	System.out.println(getBalance("jNtuYEfWLVB2PfSjhvSur5Asq1yTsXkBge"));
     	
     }
 	

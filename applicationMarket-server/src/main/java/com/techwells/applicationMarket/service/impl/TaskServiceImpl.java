@@ -334,7 +334,6 @@ public class TaskServiceImpl implements TaskService{
 			}
 			
 			//钱包存在，配置存在，那么可以进行转账了
-			
 			PayNeedData data=new PayNeedData();
 			String orderNum=System.currentTimeMillis()+"";
 			data.setClient_id(orderNum);  //订单号

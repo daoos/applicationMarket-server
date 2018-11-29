@@ -53,7 +53,7 @@ public class MoacUtils {
 		params[0]=hash;
 		TransactionDetail detail=client.invoke(MC_GETTRANSACTIONBYHASH, params,TransactionDetail.class);
 		if (detail!=null) {
-			detail.setBlockNumber(String.valueOf(Integer.parseInt(detail.getBlockNumber().substring(2),16)));
+			detail.setBlockNumber(String.valueOf(detail.getBlockNumber()!=null?Integer.parseInt(detail.getBlockNumber().substring(2),16):null));
 			detail.setValue(String.valueOf(new BigInteger(detail.getValue().substring(2), 16).longValue()/1000000000000000000.0));
 			detail.setGasPrice(String.valueOf(Integer.parseInt(detail.getGasPrice().substring(2),16)));
 			detail.setGas(String.valueOf(Integer.parseInt(detail.getGas().substring(2),16)));
@@ -65,7 +65,7 @@ public class MoacUtils {
 	//16345785d8a0000
 	@Test
 	public void test1() throws Throwable{
-		TransactionDetail detail=getTransactionDetail("0xaba7ed02fd4214dc4893c90a346bd315845662109bf0b99b1aef87c0bf1cc436");
+		TransactionDetail detail=getTransactionDetail("0x01a81629a177c803caf5c00e047b58908fd9b9a5023ee7ad7aabba64aac48f20");
 		System.out.println(detail.getValue());
 		System.out.println((Double)(Long.parseLong(detail.getGas())/1000000000000000000.0*Long.parseLong(detail.getGasPrice())));
 		System.out.println(detail.getGasPrice());
