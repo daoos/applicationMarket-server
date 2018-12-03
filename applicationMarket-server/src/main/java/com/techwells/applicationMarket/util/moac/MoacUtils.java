@@ -74,11 +74,8 @@ public class MoacUtils {
 	
 	@Test
 	public void test2()throws Throwable{
-		JsonRpcHttpClient client=new JsonRpcHttpClient(new URL(SERVER_ADDRESS));
-		Object[] params=new Object[1];    //封装请求参数
-//		params[0]=hash;
-		String a=client.invoke("mc_gasPrice",params, String.class);
-		System.out.println(String.valueOf(new BigInteger(a.substring(2),16).longValue()/1000000000000000000.0*100000000));
+		String value=getBalance("0xac8befdef14bb3d81a0a215d611d72594836ba03");
+		System.out.println(value);
 	}
 	
 	

@@ -90,7 +90,7 @@ public class QrCodeUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		createZxingqrCode("http://www.baidu.com", new File("C:\\images\\a.png"), 200, 200, "png");
+		createZxingqrCode("weixin://wxpay/bizpayurl?pr=9jn5R0q", new File("C:\\images\\weixin.png"), 200, 200, "png");
 	}
 
 }

@@ -847,6 +847,7 @@ public class AppServiceImpl implements AppService{
 				taskApp.setTaskTypeId(task.getTaskTypeId());  //任务类型的Id
 				taskApp.setTaskName(task.getTaskName());
 				taskApp.setTaskId(task.getTaskId());
+				taskApp.setLogo("http://www.emoonbow.com/applicationMarket-upload/appType/dpplog.png");
 			}
 		}
 		
